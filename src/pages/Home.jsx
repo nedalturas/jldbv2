@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-function Home(){
-  return(
-  <h1>Home</h1>
+import DataTable from '../components/DataTable'
+import Filters from '../components/Filters'
+
+function Home() {
+  const [filters, setFilters] = useState({});
+  return (
+    <>
+      <Filters onFilterChange={setFilters} />
+      <DataTable filters={filters} />
+    </>
   )
 }
 

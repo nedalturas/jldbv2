@@ -1,0 +1,210 @@
+import React, { useEffect, useState } from 'react'
+
+
+function DataTable({ filters }) {
+
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+
+    fetch('https://opensheet.vercel.app/1aAOwWOLyUdbT2a3F4IBTHDPnXBlBH240OFtIKom5H9Q/Sheet1')
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('network response was not ok');
+        }
+        return res.json();
+      })
+      .then((json) => {
+        setData(json);
+        setFilteredData(json);
+        setLoading(false)
+      })
+      .catch((err) => {
+
+        console.error('Failed to load sheet data:', err);
+        setError(err.message);
+        setLoading(false);
+      })
+  }, []);
+
+  useEffect(() => {
+
+    if (!filters) return;
+
+    let filtered = data;
+
+    if (filters.searchTerm) {
+      const searchLower = filters.searchTerm.toLowerCase();
+      filtered = filtered.filter(
+        (item) =>
+          item['Company Name']?.toLowerCase().includes(searchLower) ||
+          item['Service Type']?.toLowerCase().includes(searchLower)
+      );
+    }
+
+
+    if (filters.selectedCity) {
+      filtered = filtered.filter(
+        (item) =>
+          item[filters.selectedCity] === '✓' ||
+          item[filters.selectedCity] === '✔' ||
+          item[filters.selectedCity] === 'TRUE' ||
+          item[filters.selectedCity] === true ||
+          item[filters.selectedCity] === '1'
+      );
+    }
+
+
+    if (filters.selectedService) {
+
+      filtered = filtered.filter((item) =>
+        item['Service Type']
+          ?.split(', ')
+          .map((s) => s.trim())
+          .includes(filters.selectedService)
+      );
+
+    }
+
+    setFilteredData(filtered)
+
+
+  }, [filters, data]);
+
+  const getCityCoverage = (company) => {
+    const cities = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Al-Ain'];
+    return cities
+      .filter((city) => {
+
+        const value = company[city];
+        return (
+          value === '✓' ||
+          value === '✔' ||
+          value === 'TRUE' ||
+          value === true ||
+          value === '1'
+        );
+
+      })
+      .join(', ');
+  };
+
+  const handleWhatsAppClick = (whatsappLink) => {
+    if (!whatsappLink) return;
+
+    window.open(whatsappLink, '_blank');
+  }
+
+  const handleViewDetails = (company) => {
+    const modalContent = `
+      <div class="header">${company['Company Name']}</div>
+      <div class="content">
+        <div class="description">
+          <p><strong>Service Types:</strong> ${company['Service Type'] || 'N/A'
+      }</p>
+          <p><strong>Coverage:</strong> ${getCityCoverage(company)}</p>
+          <p><strong>Status:</strong> ${company.Status}</p>
+          ${company['WhatsApp Number']
+        ? `<p><strong>WhatsApp:</strong> ${company['WhatsApp Number']}</p>`
+        : ''
+      }
+        </div>
+      </div>
+    `;
+
+    const $modal = window.$('<div>').addClass('ui modal').html(modalContent);
+    window.$('body').append($modal);
+    $modal.modal('show');
+  };
+
+  if (loading) {
+    return (
+      <div className="ui container" style={{ marginTop: '4em' }}>
+        <div className="ui active loader"></div>
+      </div>
+    )
+  }
+
+  if (error) {
+
+    return (
+      <div className="ui container" style={{ marginTop: '4em' }}>
+        <div className="ui negative message">
+          <div className="header">Error loading data</div>
+          <p>{error}</p>
+        </div>
+      </div>
+    )
+
+  }
+
+  if (!filteredData || filteredData.length === 0) {
+
+    return (
+      <div className="ui container" style={{ marginTop: '4em' }}>
+        <div className="ui warning message">
+          <div className="header">No Matching results</div>
+          <p>Try adjusting your search filters.</p>
+        </div>
+      </div>
+    );
+
+  }
+
+  return (
+
+    <div className="ui container" style={{ marginTop: '4em' }}>
+      <table className="ui selectable striped very padded table">
+
+        <thead>
+          <tr style={{ backgroundColor: '#fff' }}>
+            <th>Company Name</th>
+            <th>Coverage</th>
+            <th>Service Types</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredData.map((item, index) => (
+
+            <tr key={index}>
+
+              <td>{item['Company Name']}</td>
+              <td>{getCityCoverage(item)}</td>
+              <td>{item['Service Type'] || 'N/A'}</td>
+              <td>
+                <div className={`ui ${item.Status === 'Active' ? 'green' : 'red'} circular basic mini label`} >
+                  {item.status}
+                </div>
+              </td>
+              <td>
+                <div className="ui mini basic buttons">
+                  <button className="compact ui inverted button">
+                    <i className="eye icon"></i>
+                    View
+                  </button>
+                  {item['Whatsapp'] && (
+                    <button className="ui green icon button" onClick={() => handleWhatsAppClick(item['Whatsapp'])}>
+                      <i className="whatsapp icon"></i>
+                      Chat
+                    </button>
+                  )}
+                </div>
+              </td>
+            </tr>
+
+          ))}
+
+        </tbody>
+      </table>
+    </div >
+
+  );
+}
+
+export default DataTable
