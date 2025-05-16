@@ -5,5 +5,6 @@ export function initFomanticUI() {
     window.$('.ui.checkbox').checkbox();
     window.$('.ui.accordion').accordion();
     window.$('.ui.popup').popup();
+    window.$('.ui.sticky').sticky();
   }
 }
