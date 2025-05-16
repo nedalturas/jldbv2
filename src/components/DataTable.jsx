@@ -1,38 +1,34 @@
-import React, { useEffect, useState } from 'react'
-
+import React, { useEffect, useState } from 'react';
 
 function DataTable({ filters }) {
-
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
-
-    fetch('https://opensheet.vercel.app/1aAOwWOLyUdbT2a3F4IBTHDPnXBlBH240OFtIKom5H9Q/Sheet1')
+    fetch(
+      'https://opensheet.vercel.app/1aAOwWOLyUdbT2a3F4IBTHDPnXBlBH240OFtIKom5H9Q/Sheet1'
+    )
       .then((res) => {
         if (!res.ok) {
-          throw new Error('network response was not ok');
+          throw new Error('Network response was not ok');
         }
         return res.json();
       })
       .then((json) => {
         setData(json);
         setFilteredData(json);
-        setLoading(false)
+        setLoading(false);
       })
       .catch((err) => {
-
         console.error('Failed to load sheet data:', err);
         setError(err.message);
         setLoading(false);
-      })
+      });
   }, []);
 
   useEffect(() => {
-
     if (!filters) return;
 
     let filtered = data;
@@ -46,7 +42,6 @@ function DataTable({ filters }) {
       );
     }
 
-
     if (filters.selectedCity) {
       filtered = filtered.filter(
         (item) =>
@@ -58,28 +53,22 @@ function DataTable({ filters }) {
       );
     }
 
-
     if (filters.selectedService) {
-
       filtered = filtered.filter((item) =>
         item['Service Type']
-          ?.split(', ')
+          ?.split(',')
           .map((s) => s.trim())
           .includes(filters.selectedService)
       );
-
     }
 
-    setFilteredData(filtered)
-
-
+    setFilteredData(filtered);
   }, [filters, data]);
 
   const getCityCoverage = (company) => {
     const cities = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Al-Ain'];
     return cities
       .filter((city) => {
-
         const value = company[city];
         return (
           value === '✓' ||
@@ -88,7 +77,6 @@ function DataTable({ filters }) {
           value === true ||
           value === '1'
         );
-
       })
       .join(', ');
   };
@@ -97,7 +85,7 @@ function DataTable({ filters }) {
     if (!whatsappLink) return;
 
     window.open(whatsappLink, '_blank');
-  }
+  };
 
   const handleViewDetails = (company) => {
     const modalContent = `
@@ -126,11 +114,10 @@ function DataTable({ filters }) {
       <div className="ui container" style={{ marginTop: '4em' }}>
         <div className="ui active loader"></div>
       </div>
-    )
+    );
   }
 
   if (error) {
-
     return (
       <div className="ui container" style={{ marginTop: '4em' }}>
         <div className="ui negative message">
@@ -138,58 +125,61 @@ function DataTable({ filters }) {
           <p>{error}</p>
         </div>
       </div>
-    )
-
+    );
   }
 
   if (!filteredData || filteredData.length === 0) {
-
     return (
       <div className="ui container" style={{ marginTop: '4em' }}>
         <div className="ui warning message">
-          <div className="header">No Matching results</div>
+          <div className="header">No matching results</div>
           <p>Try adjusting your search filters.</p>
         </div>
       </div>
     );
-
   }
 
   return (
-
     <div className="ui container" style={{ marginTop: '4em' }}>
-      <table className="ui selectable striped very padded table">
-
-        <thead>
-          <tr style={{ backgroundColor: '#fff' }}>
-            <th>Company Name</th>
-            <th>Coverage</th>
-            <th>Service Types</th>
-            <th>Status</th>
-            <th>Actions</th>
+      <table className="ui fixed single line selectable striped table">
+        <thead style={{ backgroundColor: '#fff !important' }}>
+          <tr>
+            <th className='four wide'>Company Name</th>
+            <th className='two wide'>Coverage</th>
+            <th className='three wide'>Service Types</th>
+            <th className='two wide'>Status</th>
+            <th className='three wide' >Actions</th>
           </tr>
         </thead>
         <tbody>
           {filteredData.map((item, index) => (
-
             <tr key={index}>
-
               <td>{item['Company Name']}</td>
               <td>{getCityCoverage(item)}</td>
               <td>{item['Service Type'] || 'N/A'}</td>
               <td>
-                <div className={`ui ${item.Status === 'Active' ? 'green' : 'red'} circular basic mini label`} >
-                  {item.status}
+                <div
+                  className={`ui ${item.Status === 'Active' ? 'green' : 'red'
+                    } circular basic mini label   `}
+                >
+                  {item.Status}
                 </div>
               </td>
               <td>
                 <div className="ui mini basic buttons">
-                  <button className="compact ui inverted button">
+                  <button
+                    className="compact ui inverted  button"
+                    onClick={() => handleViewDetails(item)}
+                  >
                     <i className="eye icon"></i>
                     View
                   </button>
                   {item['Whatsapp'] && (
-                    <button className="ui green icon button" onClick={() => handleWhatsAppClick(item['Whatsapp'])}>
+                    <button
+                      className="compact ui inverted button"
+                      onClick={() => handleWhatsAppClick(item['Whatsapp'])}
+                      aria-label="Contact on WhatsApp"
+                    >
                       <i className="whatsapp icon"></i>
                       Chat
                     </button>
@@ -197,14 +187,12 @@ function DataTable({ filters }) {
                 </div>
               </td>
             </tr>
-
           ))}
-
         </tbody>
       </table>
-    </div >
-
+    </div>
   );
 }
 
-export default DataTable
+export default DataTable;
+

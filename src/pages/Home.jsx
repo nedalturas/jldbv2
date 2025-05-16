@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import DataTable from '../components/DataTable'
 import Filters from '../components/Filters'
