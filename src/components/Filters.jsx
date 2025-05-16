@@ -42,21 +42,9 @@ function Filters({ onFilterChange }) {
     <div className="ui container" style={{ marginTop: '4em' }}>
       <div className="ui form">
         <div className="three fields">
-          <div className="field">
-            <label>General Search</label>
-            <div className="ui icon input">
-              <input
-                type="text"
-                placeholder="Search companies..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <i className="search icon"></i>
-            </div>
-          </div>
 
           <div className="field">
-            <label>City Coverage</label>
+            <label>Select City</label>
             <select
               className="ui search dropdown"
               value={selectedCity}
@@ -71,8 +59,10 @@ function Filters({ onFilterChange }) {
             </select>
           </div>
 
+
+
           <div className="field">
-            <label>Service Type</label>
+            <label>Select Service</label>
             <select
               className="ui search dropdown"
               value={selectedService}
@@ -86,6 +76,21 @@ function Filters({ onFilterChange }) {
               ))}
             </select>
           </div>
+
+
+          <div className="field">
+            <label>Search Company</label>
+            <div className="ui icon input">
+              <input
+                type="text"
+                placeholder="Search companies..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <i className="search icon"></i>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
