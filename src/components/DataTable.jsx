@@ -130,13 +130,6 @@ function DataTable({ filters }) {
 
   if (!filteredData || filteredData.length === 0) {
     return (
-      // <div className="ui container" style={{ marginTop: '4em' }}>
-      //   <div className="ui warning message">
-      //     <div className="header">No matching results</div>
-      //     <p>Try adjusting your search filters.</p>
-      //   </div>
-      // </div>
-
       <div className="ui container" style={{ marginTop: '4em' }}>
         <div className="" style={{
           width: '100%',
