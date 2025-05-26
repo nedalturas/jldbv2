@@ -20,7 +20,7 @@ function PageNotFound() {
         }}>
           <i className="sad tear icon" style={{
             fontSize: '4em',
-            opacity: 0.3,
+            color: 'var(--company-color)',
             marginBottom: '0.5em'
           }}></i>
           <div className="content" style={{ fontSize: '1.5em', fontWeight: 'normal' }}>

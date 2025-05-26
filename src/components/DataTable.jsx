@@ -138,51 +138,51 @@ function DataTable({ filters }) {
       // </div>
 
       <div className="ui container" style={{ marginTop: '4em' }}>
-      <div className="" style={{
-        width: '100%',
-        minHeight: '250px', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        textAlign: 'center',
-        padding: '4em 2em'
-      }}>
-        <div className="ui icon header" style={{ 
-          color: '#999', 
-          marginBottom: '2em',
-          fontSize: '2.5em'
+        <div className="" style={{
+          width: '100%',
+          minHeight: '250px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+          padding: '4em 2em'
         }}>
-          <i className="sad tear icon" style={{ 
-            fontSize: '4em', 
-            opacity: 0.3,
-            marginBottom: '0.5em'
-          }}></i>
-          <div className="content" style={{ fontSize: '1.5em', fontWeight: 'normal' }}>
-            No Results Found
-            <div className="sub header" style={{ 
-              fontSize: '0.7em', 
-              color: '#666', 
-              marginTop: '1em',
-              lineHeight: '1.5'
-            }}>
-              We couldn't find any companies matching your search criteria.
-              <br />
-              Try adjusting your filters or search terms.
+          <div className="ui icon header" style={{
+            color: '#999',
+            marginBottom: '2em',
+            fontSize: '2.5em'
+          }}>
+            <i className="sad tear icon" style={{
+              color: 'var(--company-color)',
+              fontSize: '4em',
+              marginBottom: '0.5em'
+            }}></i>
+            <div className="content" style={{ fontSize: '1.5em', fontWeight: 'normal' }}>
+              No Results Found
+              <div className="sub header" style={{
+                fontSize: '0.4em',
+                color: '#666',
+                marginTop: '1em',
+                lineHeight: '1.5'
+              }}>
+                We couldn't find any companies matching your search criteria.
+                <br />
+                Try adjusting your filters or search terms.
+              </div>
             </div>
           </div>
-        </div>
-        
 
-        
+
+
+        </div>
       </div>
-    </div>
     );
   }
 
   return (
     <div className="ui container" style={{ marginTop: '4em' }}>
-      <table className="ui fixed single line selectable striped table">
+      <table className="ui fixed single line selectable striped padded table">
         <thead style={{ backgroundColor: '#fff !important' }}>
           <tr>
             <th className='four wide'>Company Name</th>
@@ -207,29 +207,31 @@ function DataTable({ filters }) {
                 </div>
               </td>
               <td>
-                  
-                  <div className="mini ui vertical animated button" 
+
+                <div className="mini ui vertical animated button"
                   tabIndex={0}
                   onClick={() => handleViewDetails(item)}>
 
-                    <div className="hidden content">View</div>
-                    <div className="visible content">
-                      <i className="eye icon"></i>
-                    </div>
-
+                  <div className="hidden content">View</div>
+                  <div className="visible content">
+                    <i className="eye icon"></i>
                   </div>
-                
-                  {item['Whatsapp'] && (
-                 
-                    <div className="mini ui animated button"
-                    onClick={() => handleWhatsAppClick(item['Whatsapp'])}>
-                      <div className="visible content">
-                        <i className="whatsapp icon"></i>
-                      </div>
-                      <div className="hidden content">Chat</div>
-                    </div>
 
-                  )}
+                </div>
+
+                {item['Whatsapp'] && (
+
+                  <div className="mini ui animated button"
+                    onClick={() => handleWhatsAppClick(item['Whatsapp'])}
+                    style={{ backgroundColor: '#25D366' }}
+                  >
+                    <div className="visible content">
+                      <i className="whatsapp icon" style={{ fontWeight: 'bolder' }}></i>
+                    </div>
+                    <div className="hidden content">Chat</div>
+                  </div>
+
+                )}
               </td>
             </tr>
           ))}
