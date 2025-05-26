@@ -15,15 +15,14 @@ function Navbar() {
         </div>
 
         <div className="right menu">
-          <Link to="/" className="item" style={{ 
-              backgroundColor: isActive('/') ? 'rgba(255,255,255,0.1)' : 'transparent',
-              borderBottom: isActive('/') ? '2px solid white' : 'none'
-            }}>Database</Link>
-          <Link to="/faq" className="item" style={{ 
-              backgroundColor: isActive('/faq') ? 'rgba(255,255,255,0.1)' : 'transparent',
-              borderBottom: isActive('/faq') ? '2px solid white' : 'none'
-            }}
->FAQ</Link>
+          <Link to="/" className="item" style={{
+            backgroundColor: isActive('/') ? 'rgba(255,255,255,0.1)' : 'transparent',
+            borderBottom: isActive('/') ? '2px solid white' : 'none'
+          }}>Database</Link>
+          <Link to="/faq" className="item" style={{
+            backgroundColor: isActive('/faq') ? 'rgba(255,255,255,0.1)' : 'transparent',
+            borderBottom: isActive('/faq') ? '2px solid white' : 'none'
+          }}>FAQ</Link>
         </div>
 
       </div>
