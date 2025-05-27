@@ -40,33 +40,36 @@ function FAQ() {
   }, [activeDoc]);
 
   return (
-    <div className="ui grid">
-      <div className="four wide column">
-        <div className="ui vertical menu">
-          {docs.map(doc => (
-            <a
-              key={doc}
-              className={`item ${doc === activeDoc ? 'active' : ''}`}
-              onClick={() => setActiveDoc(doc)}
-              style={{ cursor: 'pointer' }}
-            >
-              {doc.replace('.md', '').replace(/-/g, ' ')}
-            </a>
-          ))}
+    <div className="ui container">
+      <div className="ui grid">
+        <div className="four wide column">
+          <div className="ui secondary vertical pointing menu">
+            {docs.map(doc => (
+              <a
+                key={doc}
+                className={`item ${doc === activeDoc ? 'active' : ''}`}
+                onClick={() => setActiveDoc(doc)}
+                style={{ cursor: 'pointer' }}
+              >
+                {doc.replace('.md', '').replace(/-/g, ' ')}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div className="twelve wide column">
+          <div className="ui segment">
+            {loadingDoc ? (
+              <div className="ui active inverted dimmer">
+                <div className="ui text loader">Loading document...</div>
+              </div>
+            ) : (
+              <ReactMarkdown>{content}</ReactMarkdown>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="twelve wide column">
-        <div className="ui segment">
-          {loadingDoc ? (
-            <div className="ui active inverted dimmer">
-              <div className="ui text loader">Loading document...</div>
-            </div>
-          ) : (
-            <ReactMarkdown>{content}</ReactMarkdown>
-          )}
-        </div>
-      </div>
     </div>
   );
 }
