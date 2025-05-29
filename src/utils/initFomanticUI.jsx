@@ -6,5 +6,6 @@ export function initFomanticUI() {
     window.$('.ui.accordion').accordion();
     window.$('.ui.popup').popup();
     window.$('.ui.sticky').sticky();
+    window.$('.ui.sidebar').sidebar();
   }
 }
