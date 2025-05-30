@@ -51,7 +51,8 @@
 }
 
 .faq-menu-item.active {
-    background: #2185d0;
+    /* background: #2185d0; */
+    background-color: var(--company-color);
     color: white;
 }
 

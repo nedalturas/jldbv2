@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import styles from './Navbar.module.css'
 
 function Navbar() {
 
@@ -7,7 +8,7 @@ function Navbar() {
   const isActive = (path) => location.pathname === path
 
   return (
-    <div className="ui massive borderless menu" style={{ backgroundColor: 'var(--company-color)', position: 'sticky', top: '0', fontWeight: 'bolder', zIndex: 100, boxShadow: '1px 5px 10px -6px rgba(71,71,71,1)' }}>
+    <div className={`${styles.navbar} ui massive borderless menu`}>
 
       <div className="ui container">
         <div className="item" id="brand-name">

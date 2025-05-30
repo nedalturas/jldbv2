@@ -1,0 +1,9 @@
+.navbar{
+    background-color: var(--company-color) !important;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-weight: bolder;
+    border-radius: 0 !important;
+    box-shadow:  1px 5px 10px 0 -6px rgba(71,71,71,1) !important;
+}
