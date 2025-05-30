@@ -165,9 +165,6 @@ function DataTable({ filters }) {
               </div>
             </div>
           </div>
-
-
-
         </div>
       </div>
     );

@@ -98,7 +98,7 @@ function FAQ() {
             {activeDoc ? formatDocName(activeDoc) : 'Select Document'}
           </button>
         </div>
- 
+
         <div className={styles['faq-content']}>
           {/* Sidebar */}
           <div className={`${styles['faq-sidebar']} ${mobileMenuOpen ? styles.open : ''}`}>
@@ -112,7 +112,7 @@ function FAQ() {
               </a>
             ))}
           </div>
- 
+
           {/* Main Content */}
           <div
             ref={contentRef}
