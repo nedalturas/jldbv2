@@ -20,6 +20,8 @@
     background: #f8f9fa;
     border-right: 1px solid #dee2e6;
     overflow-y: auto;
+    position: sticky;
+    top: 0;
 }
 
 .faq-main {
@@ -75,20 +77,15 @@
     z-index: 1000;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .faq-mobile-toggle {
-        display: block;
+ display: block;
     }
 
     .faq-sidebar {
         position: absolute;
         top: 0;
         left: 0;
-        right: 0;
-        height: 100%;
-        z-index: 100;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
     }
 
     .faq-sidebar.open {
@@ -97,6 +94,10 @@
 
     .faq-main {
         padding: 2rem;
+    }
+
+    .faq-sidebar.visible-mobile {
+        display: block; /* Visible when the mobile menu is open */
     }
 
     .faq-content {
@@ -123,3 +124,4 @@
     border-radius: 4px;
     overflow-x: auto;
 } 
+

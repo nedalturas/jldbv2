@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
-import styles from './faq.module.css'
-
+import './faq.module.css'; // Import the external CSS file
 function FAQ() {
   const [docs, setDocs] = useState([]);
   const [activeDoc, setActiveDoc] = useState('');
@@ -78,68 +77,64 @@ function FAQ() {
   };
 
   return (
-    <>
-      <div className="ui container">
-        <div className={styles['faq-container']}>
-          {/* Progress Bar */}
-          <div className={styles['faq-progress']}>
-            <div
-              className={styles['faq-progress-bar']}
-              style={{ width: `${scrollProgress}%` }}
-            />
-          </div>
+    <div className="ui container"> {/* Center the content */}
+    <div className="faq-container">
+      {/* Scroll progress bar */}
+      <div className="faq-progress">
+        <div className="faq-progress-bar" style={{ width: `${scrollProgress}%` }}></div>
+      </div>
 
-          {/* Mobile Toggle */}
-          <div className={styles['faq-mobile-toggle']}>
+      <div className="ui grid stackable faq-content-wrapper">
+        {/* Mobile menu button */}
+        <div className="ui mobile only grid faq-mobile-toggle">
+          <div className="column">
             <button
-              className="ui button fluid" // Keep Fomantic UI classes
+              className={`ui icon button ${mobileMenuOpen ? 'active' : ''}`}
+              aria-label="Toggle navigation menu"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
+              Menu
               <i className="bars icon"></i>
-              {activeDoc ? formatDocName(activeDoc) : 'Select Document'}
             </button>
           </div>
-
-          <div className={styles['faq-content']}>
-            {/* Sidebar */}
-            <div className={`${styles['faq-sidebar']} ${mobileMenuOpen ? styles.open : ''}`}>
-              {docs.map(doc => (
-                <a
-                  key={doc}
-                  className={`${styles['faq-menu-item']} ${doc === activeDoc ? styles.active : ''}`}
-                  onClick={() => handleDocSelect(doc)}
-                >
-                  {formatDocName(doc)}
-                </a>
-              ))}
-            </div>
-
-            {/* Main Content */}
-            <div
-              ref={contentRef}
-              className={styles['faq-main']}
-            >
-              {loadingDoc ? (
-                <div className="ui active loader"></div> // Keep Fomantic UI classes
-              ) : (
-                <div className={styles['markdown-content']}>
-                  <ReactMarkdown>{content}</ReactMarkdown>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Scroll Progress Indicator */}
-          {scrollProgress > 0 && (
-            <div className="faq-scroll-info">
-              {scrollProgress}% {/* This is content, not a class name */}
-            </div>
-          )}
         </div>
 
+        {/* Sidebar */}
+        {/* The 'hidden' class is removed here and controlled by CSS for responsiveness */}
+        <div className={`ui five wide tablet three wide computer column faq-sidebar ${mobileMenuOpen ? 'visible-mobile' : ''}`}>
+          <div className="ui vertical fluid tabular menu">
+            {docs.map((doc, index) => (
+              <a
+                key={index}
+                className={`item ${activeDoc === doc ? 'active' : ''}`}
+                onClick={() => handleDocSelect(doc)}
+              >
+                {formatDocName(doc)}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Main content */}
+        {/* The 'hidden' class is removed here and controlled by CSS for responsiveness */}
+        <div className="ui eleven wide tablet thirteen wide computer column faq-main-content">
+          <div className="faq-content-area" ref={contentRef}>
+            {loadingDoc ? (
+              <div className="ui active dimmer">
+                <div className="ui loader"></div>
+              </div>
+            ) : (
+              <div className="ui basic segment">
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-    </>
+
+    </div>
+    </div>
   );
 }
 
-export default FAQ;
+export default FAQ
