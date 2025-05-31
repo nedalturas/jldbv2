@@ -1,10 +1,13 @@
+
 .faq-container {
+    margin-top: -1em;
     height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Added to disable scrollbar on the container */
 }
 .faq-progress {
-    height: 3px;
+    height: 10px;
     background: #f0f0f0;
     position: relative;
 }
@@ -19,13 +22,13 @@
     width: 280px;
     background: #f8f9fa;
     border-right: 1px solid #dee2e6;
-    overflow-y: auto;
+    overflow-y: auto; /* Added to enable scrollbar on the sidebar if content overflows */
 }
 
 .faq-main {
     flex: 1;
-    overflow-y: auto;
     padding: 4rem;
+    overflow-y: auto; /* Added to enable scrollbar on the main content if content overflows */
 }
 
 .faq-content {

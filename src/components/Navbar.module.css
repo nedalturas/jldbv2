@@ -1,4 +1,6 @@
 .navbar{
+    margin: 0;
+    padding: 0;
     background-color: var(--company-color) !important;
     position: sticky;
     top: 0;
