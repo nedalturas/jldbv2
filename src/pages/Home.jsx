@@ -8,7 +8,7 @@ function Home() {
   const [filters, setFilters] = useState({});
   return (
     <>
-      <div className={styles['body']}>
+      <div>
 
         <Filters onFilterChange={setFilters} />
         <DataTable filters={filters} />

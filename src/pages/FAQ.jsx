@@ -79,61 +79,64 @@ function FAQ() {
 
   return (
     <>
-      <div className={styles['faq-container']}>
-        {/* Progress Bar */}
-        <div className={styles['faq-progress']}>
-          <div
-            className={styles['faq-progress-bar']}
-            style={{ width: `${scrollProgress}%` }}
-          />
-        </div>
-
-        {/* Mobile Toggle */}
-        <div className={styles['faq-mobile-toggle']}>
-          <button
-            className="ui button fluid" // Keep Fomantic UI classes
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <i className="bars icon"></i>
-            {activeDoc ? formatDocName(activeDoc) : 'Select Document'}
-          </button>
-        </div>
-
-        <div className={styles['faq-content']}>
-          {/* Sidebar */}
-          <div className={`${styles['faq-sidebar']} ${mobileMenuOpen ? styles.open : ''}`}>
-            {docs.map(doc => (
-              <a
-                key={doc}
-                className={`${styles['faq-menu-item']} ${doc === activeDoc ? styles.active : ''}`}
-                onClick={() => handleDocSelect(doc)}
-              >
-                {formatDocName(doc)}
-              </a>
-            ))}
+      <div className="ui container">
+        <div className={styles['faq-container']}>
+          {/* Progress Bar */}
+          <div className={styles['faq-progress']}>
+            <div
+              className={styles['faq-progress-bar']}
+              style={{ width: `${scrollProgress}%` }}
+            />
           </div>
 
-          {/* Main Content */}
-          <div
-            ref={contentRef}
-            className={styles['faq-main']}
-          >
-            {loadingDoc ? (
-              <div className="ui active loader"></div> // Keep Fomantic UI classes
-            ) : (
-              <div className={styles['markdown-content']}>
-                <ReactMarkdown>{content}</ReactMarkdown>
-              </div>
-            )}
+          {/* Mobile Toggle */}
+          <div className={styles['faq-mobile-toggle']}>
+            <button
+              className="ui button fluid" // Keep Fomantic UI classes
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <i className="bars icon"></i>
+              {activeDoc ? formatDocName(activeDoc) : 'Select Document'}
+            </button>
           </div>
+
+          <div className={styles['faq-content']}>
+            {/* Sidebar */}
+            <div className={`${styles['faq-sidebar']} ${mobileMenuOpen ? styles.open : ''}`}>
+              {docs.map(doc => (
+                <a
+                  key={doc}
+                  className={`${styles['faq-menu-item']} ${doc === activeDoc ? styles.active : ''}`}
+                  onClick={() => handleDocSelect(doc)}
+                >
+                  {formatDocName(doc)}
+                </a>
+              ))}
+            </div>
+
+            {/* Main Content */}
+            <div
+              ref={contentRef}
+              className={styles['faq-main']}
+            >
+              {loadingDoc ? (
+                <div className="ui active loader"></div> // Keep Fomantic UI classes
+              ) : (
+                <div className={styles['markdown-content']}>
+                  <ReactMarkdown>{content}</ReactMarkdown>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Scroll Progress Indicator */}
+          {scrollProgress > 0 && (
+            <div className="faq-scroll-info">
+              {scrollProgress}% {/* This is content, not a class name */}
+            </div>
+          )}
         </div>
 
-        {/* Scroll Progress Indicator */}
-        {scrollProgress > 0 && (
-          <div className="faq-scroll-info">
-            {scrollProgress}% {/* This is content, not a class name */}
-          </div>
-        )}
       </div>
     </>
   );
