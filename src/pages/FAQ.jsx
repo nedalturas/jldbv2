@@ -1,14 +1,13 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
-import './faq.module.css'; // Import the external CSS file
+import styles from './faq.module.css';
+
 function FAQ() {
   const [docs, setDocs] = useState([]);
   const [activeDoc, setActiveDoc] = useState('');
   const [content, setContent] = useState('');
   const [loadingDoc, setLoadingDoc] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const contentRef = useRef(null);
 
   // Load manifest.json
@@ -20,7 +19,9 @@ function FAQ() {
       })
       .then(data => {
         setDocs(data);
-        setActiveDoc(data[0]);
+        if (data.length > 0) {
+          setActiveDoc(data[0]);
+        }
       })
       .catch(err => console.error('Error loading manifest:', err));
   }, []);
@@ -42,28 +43,6 @@ function FAQ() {
       .finally(() => setLoadingDoc(false));
   }, [activeDoc]);
 
-  // Scroll handler
-  const handleScroll = useCallback(() => {
-    if (!contentRef.current) return;
-
-    const { scrollTop, scrollHeight, clientHeight } = contentRef.current;
-    const totalScrollable = scrollHeight - clientHeight;
-
-    if (totalScrollable > 0) {
-      const progress = Math.round((scrollTop / totalScrollable) * 100);
-      setScrollProgress(progress);
-    }
-  }, []);
-
-  // Setup scroll listener
-  useEffect(() => {
-    const element = contentRef.current;
-    if (!element) return;
-
-    element.addEventListener('scroll', handleScroll, { passive: true });
-    return () => element.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
   const handleDocSelect = (doc) => {
     setActiveDoc(doc);
     setMobileMenuOpen(false);
@@ -73,68 +52,107 @@ function FAQ() {
   };
 
   const formatDocName = (doc) => {
-    return doc.replace('.md', '').replace(/-/g, ' ');
+    return doc.replace('.md', '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
-    <div className="ui container"> {/* Center the content */}
-    <div className="faq-container">
-      {/* Scroll progress bar */}
-      <div className="faq-progress">
-        <div className="faq-progress-bar" style={{ width: `${scrollProgress}%` }}></div>
-      </div>
-
-      <div className="ui grid stackable faq-content-wrapper">
-        {/* Mobile menu button */}
-        <div className="ui mobile only grid faq-mobile-toggle">
-          <div className="column">
-            <button
-              className={`ui icon button ${mobileMenuOpen ? 'active' : ''}`}
-              aria-label="Toggle navigation menu"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+    <div className="ui container ">
+      {/* Mobile Header */}
+      <div className={`${styles.mobileHeader} ui top  menu`}>
+        <div className="ui container">
+          <div className="item">
+            <button 
+              className={`ui basic icon button ${styles.menuToggle}`}
+              onClick={toggleMobileMenu}
             >
-              Menu
-              <i className="bars icon"></i>
+              <i className={`${mobileMenuOpen ? 'times' : 'bars'} icon`}></i>
             </button>
           </div>
+          <div className="header item">
+            <h4 className="ui header">Documentation</h4>
+          </div>
         </div>
+      </div>
 
-        {/* Sidebar */}
-        {/* The 'hidden' class is removed here and controlled by CSS for responsiveness */}
-        <div className={`ui five wide tablet three wide computer column faq-sidebar ${mobileMenuOpen ? 'visible-mobile' : ''}`}>
-          <div className="ui vertical fluid tabular menu">
-            {docs.map((doc, index) => (
+      {/* Mobile Menu Sidebar */}
+      <div className={`ui left sidebar vertical menu ${mobileMenuOpen ? 'visible' : ''} ${styles.mobileSidebar}`}>
+        <div className="item">
+          <div className="header">Select Documentation</div>
+        </div>
+        <div className="ui divider"></div>
+        {docs.map(doc => (
+          <a
+            key={doc}
+            className={`item ${activeDoc === doc ? 'active' : ''}`}
+            onClick={() => handleDocSelect(doc)}
+          >
+            <i className="file text outline icon"></i>
+            {formatDocName(doc)}
+          </a>
+        ))}
+      </div>
+
+      {/* Overlay for mobile menu */}
+      {mobileMenuOpen && (
+        <div 
+          className={styles.overlay}
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      <div className={`ui stackable grid ${styles.mainGrid}`}>
+        {/* Desktop Sidebar */}
+        <div className={`four wide column ${styles.sidebarColumn}`}>
+          <div className={`ui vertical fluid tabular menu ${styles.desktopSidebar}`}>
+            <div className="item">
+              <div className="ui small header">
+                <i className="book icon"></i>
+                Documentation
+              </div>
+            </div>
+            <div className="ui divider"></div>
+            {docs.map(doc => (
               <a
-                key={index}
+                key={doc}
                 className={`item ${activeDoc === doc ? 'active' : ''}`}
                 onClick={() => handleDocSelect(doc)}
               >
+                <i className="file text outline icon"></i>
                 {formatDocName(doc)}
               </a>
             ))}
           </div>
         </div>
-
-        {/* Main content */}
-        {/* The 'hidden' class is removed here and controlled by CSS for responsiveness */}
-        <div className="ui eleven wide tablet thirteen wide computer column faq-main-content">
-          <div className="faq-content-area" ref={contentRef}>
-            {loadingDoc ? (
-              <div className="ui active dimmer">
-                <div className="ui loader"></div>
+        
+        {/* Content Area */}
+        <div className={`twelve wide stretched column ${styles.contentColumn}`}>
+          <div className={`ui segment ${styles.contentSegment}`} ref={contentRef}>
+            <div className="ui header">
+              <i className="file text icon"></i>
+              <div className="content">
+                {formatDocName(activeDoc)}
+                <div className="sub header">Documentation</div>
               </div>
+            </div>
+            
+            <div className="ui divider"></div>
+            
+            {loadingDoc ? (
+              <div className="ui active centered inline loader"></div>
             ) : (
-              <div className="ui basic segment">
+              <div className={`${styles.markdownContent} ui basic segment`}>
                 <ReactMarkdown>{content}</ReactMarkdown>
               </div>
             )}
           </div>
         </div>
       </div>
-
-    </div>
     </div>
   );
 }
 
-export default FAQ
+export default FAQ;
