@@ -23,19 +23,28 @@ function FAQ() {
           setActiveDoc(data[0]);
         }
       })
-      .catch(err => console.error('Error loading manifest:', err));
+      .catch(err => {
+        console.error('Error loading manifest:', err);
+        setContent('⚠️ Failed to load documentation.');
+      });
   }, []);
 
   // Load active markdown file
   useEffect(() => {
     if (!activeDoc) return;
     setLoadingDoc(true);
+    
     fetch(`/docs/${activeDoc}`)
       .then(res => {
         if (!res.ok) throw new Error('Failed to load doc');
         return res.text();
       })
-      .then(setContent)
+      .then(content => {
+        setContent(content);
+        if (contentRef.current) {
+          contentRef.current.scrollTop = 0;
+        }
+      })
       .catch(err => {
         console.error(`Error loading /docs/${activeDoc}:`, err);
         setContent('⚠️ Failed to load content.');
@@ -43,45 +52,38 @@ function FAQ() {
       .finally(() => setLoadingDoc(false));
   }, [activeDoc]);
 
-  const handleDocSelect = (doc) => {
+  const handleDocSelect = useCallback((doc) => {
     setActiveDoc(doc);
     setMobileMenuOpen(false);
-    if (contentRef.current) {
-      contentRef.current.scrollTop = 0;
-    }
-  };
+  }, []);
 
-  const formatDocName = (doc) => {
+  const formatDocName = useCallback((doc) => {
     return doc.replace('.md', '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-  };
+  }, []);
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen(prev => !prev);
+  }, []);
 
   return (
-    <div className="ui container ">
+    <div className="ui container">
       {/* Mobile Header */}
-      <div className={`${styles.mobileHeader} ui top  menu`}>
-        <div className="ui container">
-          <div className="item">
-            <button 
-              className={`ui basic icon button ${styles.menuToggle}`}
-              onClick={toggleMobileMenu}
-            >
-              <i className={`${mobileMenuOpen ? 'times' : 'bars'} icon`}></i>
-            </button>
-          </div>
-          <div className="header item">
-            <h4 className="ui header">Documentation</h4>
-          </div>
+      <div className={`${styles.mobileHeader} ui menu`}>
+        <div className="item">
+          <button 
+            className={`ui basic icon button ${styles.menuToggle}`}
+            onClick={toggleMobileMenu}
+            aria-label="Toggle menu"
+          >
+            <i className={`${mobileMenuOpen ? 'times' : 'bars'} icon`}></i>
+          </button>
         </div>
       </div>
 
       {/* Mobile Menu Sidebar */}
       <div className={`ui left sidebar vertical menu ${mobileMenuOpen ? 'visible' : ''} ${styles.mobileSidebar}`}>
         <div className="item">
-          <div className="header">Select Documentation</div>
+          <div className="header">Documentation</div>
         </div>
         <div className="ui divider"></div>
         {docs.map(doc => (
@@ -97,12 +99,10 @@ function FAQ() {
       </div>
 
       {/* Overlay for mobile menu */}
-      {mobileMenuOpen && (
-        <div 
-          className={styles.overlay}
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
+      <div 
+        className={`${styles.overlay} ${mobileMenuOpen ? styles.visible : ''}`}
+        onClick={() => setMobileMenuOpen(false)}
+      />
 
       <div className={`ui stackable grid ${styles.mainGrid}`}>
         {/* Desktop Sidebar */}

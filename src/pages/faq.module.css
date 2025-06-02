@@ -1,320 +1,316 @@
 /* Mobile Header - Hidden on desktop */
 .mobileHeader {
     display: none !important;
-    margin-top: 3em;
     z-index: 1001;
-  } /* Fixed position on mobile, above content */
-  
-  .menuToggle {
+}
+
+.menuToggle {
     padding: 0.5rem !important;
-  }
-  
-  /* Mobile Sidebar */
-  .mobileSidebar {
+    transition: all 0.2s ease;
+}
+
+.menuToggle:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Mobile Sidebar */
+.mobileSidebar {
     z-index: 1000 !important;
-    width: 280px !important; /* Below mobile header */
+    width: 280px !important;
     transform: translate3d(-100%, 0, 0);
-    transition: transform 0.3s ease !important;
-  }
-  
-  .mobileSidebar.visible {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1) !important;
+    background: #fff;
+}
+
+.mobileSidebar.visible {
     transform: translate3d(0, 0, 0) !important;
-  }
-  
-  /* Overlay */
-  .overlay {
+}
+
+/* Overlay */
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 999;
-    display: none;
-  }
-  
-  /* Main Grid */
-  .mainGrid {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Main Grid */
+.mainGrid {
     margin-top: 0 !important;
     min-height: 100vh;
-  }
-  
-  /* Desktop Sidebar */
-  .sidebarColumn {
+}
+
+/* Desktop Sidebar */
+.sidebarColumn {
     padding-left: 0 !important;
     padding-right: 1rem !important;
-  }
-  
-  .desktopSidebar {
+}
+
+.desktopSidebar {
     position: sticky !important;
     top: 2rem;
     height: calc(100vh - 4rem);
     overflow-y: auto;
     border-radius: 0.28571429rem !important;
-    box-shadow: 0 1px 3px 0 rgba(34, 36, 38, 0.15) !important;
-  }
-  
-  .desktopSidebar .item {
+    box-shadow: 0 1px 3px rgba(34, 36, 38, 0.15) !important;
+}
+
+.desktopSidebar .item {
     padding: 0.85714286em 1.14285714em !important;
     transition: all 0.2s ease;
-  }
-  
-  .desktopSidebar .item:hover {
+}
+
+.desktopSidebar .item:hover {
     background: rgba(0, 0, 0, 0.03) !important;
-  }
-  
-  .desktopSidebar .item.active {
+    transform: translateX(2px);
+}
+
+.desktopSidebar .item.active {
     background: rgba(33, 133, 208, 0.08) !important;
     color: #2185d0 !important;
     border-right: 0.2em solid #2185d0 !important;
     font-weight: bold !important;
-  }
-  
-  /* Content Column */
-  .contentColumn {
+}
+
+/* Content Column */
+.contentColumn {
     padding-left: 1rem !important;
     padding-right: 0 !important;
-  }
-  
-  .contentSegment {
+}
+
+.contentSegment {
     border-radius: 0.28571429rem !important;
-    box-shadow: 0 1px 3px 0 rgba(34, 36, 38, 0.15) !important;
+    box-shadow: 0 1px 3px rgba(34, 36, 38, 0.15) !important;
     height: calc(100vh - 4rem);
     overflow-y: auto;
     position: sticky;
     top: 2rem;
-  }
-  
-  /* Markdown Content Styling */
-  .markdownContent {
+}
+
+/* Markdown Content Styling */
+.markdownContent {
     padding: 1rem !important;
     margin: 0 !important;
     box-shadow: none !important;
     border: none !important;
-  }
-  
-  .markdownContent h1,
-  .markdownContent h2,
-  .markdownContent h3,
-  .markdownContent h4,
-  .markdownContent h5,
-  .markdownContent h6 {
+}
+
+.markdownContent h1,
+.markdownContent h2,
+.markdownContent h3,
+.markdownContent h4,
+.markdownContent h5,
+.markdownContent h6 {
     margin-top: 2rem;
     margin-bottom: 1rem;
     font-weight: 600;
-    line-height: 1.3;
+    line-height: 1.4;
     color: rgba(0, 0, 0, 0.87);
-  }
-  
-  .markdownContent h1:first-child,
-  .markdownContent h2:first-child,
-  .markdownContent h3:first-child {
+}
+
+.markdownContent h1:first-child,
+.markdownContent h2:first-child,
+.markdownContent h3:first-child {
     margin-top: 0;
-  }
-  
-  .markdownContent h1 { 
+}
+
+.markdownContent h1 { 
     font-size: 2rem; 
     border-bottom: 1px solid rgba(34, 36, 38, 0.15);
     padding-bottom: 0.5rem;
-  }
-  
-  .markdownContent h2 { 
+}
+
+.markdownContent h2 { 
     font-size: 1.5rem; 
     border-bottom: 1px solid rgba(34, 36, 38, 0.1);
     padding-bottom: 0.3rem;
-  }
-  
-  .markdownContent h3 { font-size: 1.3rem; }
-  .markdownContent h4 { font-size: 1.1rem; }
-  
-  .markdownContent p {
+}
+
+.markdownContent h3 { font-size: 1.3rem; }
+.markdownContent h4 { font-size: 1.1rem; }
+
+.markdownContent p {
     margin-bottom: 1rem;
     line-height: 1.6;
     color: rgba(0, 0, 0, 0.8);
-  }
-  
-  .markdownContent ul,
-  .markdownContent ol {
+}
+
+.markdownContent ul,
+.markdownContent ol {
     margin-bottom: 1rem;
     padding-left: 2rem;
-  }
-  
-  .markdownContent li {
+}
+
+.markdownContent li {
     margin-bottom: 0.5rem;
     line-height: 1.5;
-  }
-  
-  .markdownContent code {
+}
+
+.markdownContent code {
     background: rgba(0, 0, 0, 0.05);
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.28571429rem;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
     font-size: 0.9em;
-    font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, monospace;
     color: #e03997;
-  }
-  
-  .markdownContent pre {
+}
+
+.markdownContent pre {
     background: #f8f8f9;
     border: 1px solid rgba(34, 36, 38, 0.15);
     border-radius: 0.28571429rem;
     padding: 1rem;
     overflow-x: auto;
-    margin-bottom: 1rem;
-  }
-  
-  .markdownContent pre code {
+    margin: 1rem 0;
+}
+
+.markdownContent pre code {
     background: none;
     padding: 0;
     color: rgba(0, 0, 0, 0.87);
-  }
-  
-  .markdownContent blockquote {
+}
+
+.markdownContent blockquote {
     border-left: 4px solid #2185d0;
     background: rgba(33, 133, 208, 0.05);
     padding: 1rem;
     margin: 1rem 0;
     font-style: italic;
     border-radius: 0 0.28571429rem 0.28571429rem 0;
-  }
-  
-  .markdownContent table {
+}
+
+.markdownContent table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 1rem;
     border: 1px solid rgba(34, 36, 38, 0.15);
     border-radius: 0.28571429rem;
     overflow: hidden;
-  }
-  
-  .markdownContent th,
-  .markdownContent td {
+}
+
+.markdownContent th,
+.markdownContent td {
     padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid rgba(34, 36, 38, 0.1);
-  }
-  
-  .markdownContent th {
+}
+
+.markdownContent th {
     background: rgba(0, 0, 0, 0.03);
     font-weight: 600;
     color: rgba(0, 0, 0, 0.87);
-  }
-  
-  .markdownContent a {
+}
+
+.markdownContent a {
     color: #2185d0;
     text-decoration: none;
-  }
-  
-  .markdownContent a:hover {
+}
+
+.markdownContent a:hover {
     color: #1678c2;
     text-decoration: underline;
-  }
-  
-  /* Custom scrollbar for webkit browsers */
-  .contentSegment::-webkit-scrollbar,
-  .desktopSidebar::-webkit-scrollbar {
+}
+
+/* Custom scrollbar for webkit browsers */
+.contentSegment::-webkit-scrollbar,
+.desktopSidebar::-webkit-scrollbar {
     width: 8px;
-  }
-  
-  .contentSegment::-webkit-scrollbar-track,
-  .desktopSidebar::-webkit-scrollbar-track {
+}
+
+.contentSegment::-webkit-scrollbar-track,
+.desktopSidebar::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 4px;
-  }
-  
-  .contentSegment::-webkit-scrollbar-thumb,
-  .desktopSidebar::-webkit-scrollbar-thumb {
+}
+
+.contentSegment::-webkit-scrollbar-thumb,
+.desktopSidebar::-webkit-scrollbar-thumb {
     background: #c1c1c1;
     border-radius: 4px;
-  }
-  
-  .contentSegment::-webkit-scrollbar-thumb:hover,
-  .desktopSidebar::-webkit-scrollbar-thumb:hover {
+}
+
+.contentSegment::-webkit-scrollbar-thumb:hover,
+.desktopSidebar::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
-  }
-  
-  /* Mobile Styles */
-  @media (max-width: 767px) {
-    /* Show mobile header */
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
     .mobileHeader {
-      display: flex !important;
-      /* padding-top: 4rem !important; Account for fixed menu */
+        display: flex !important;
     }
-  
-    /* Show overlay when menu is open */
-    .overlay {
-      display: block;
-    }
-  
-    /* Hide desktop sidebar */
+
     .sidebarColumn {
-      display: none !important;
+        display: none !important;
     }
-  
-    /* Full width content on mobile */
+
     .contentColumn {
-      width: 100% !important;
-      padding: 1rem !important;
-      padding-top: 5rem !important; /* Account for fixed header */
+        width: 100% !important;
+        padding: 1rem !important;
     }
-  
+
     .mainGrid {
-      margin: 0 !important;
+        margin: 0 !important;
     }
-  
+
     .contentSegment {
-      height: auto;
-      position: static;
-      margin-top: 0;
+        height: auto;
+        position: static;
+        margin-top: 0;
+        border-radius: 0.28571429rem !important;
     }
-  
+
     .markdownContent {
-      padding: 1rem !important;
+        padding: 1rem !important;
     }
-  
-    .markdownContent h1 { font-size: 1.5rem; }
-    .markdownContent h2 { font-size: 1.3rem; }
-    .markdownContent h3 { font-size: 1.1rem; }
-    
+
     .markdownContent pre {
-      font-size: 0.85rem;
+        margin: 1rem -1rem;
+        border-radius: 0;
+        padding: 1rem;
+        font-size: 0.9rem;
     }
-  
+
     .markdownContent table {
-      font-size: 0.9rem;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
-  
-    .markdownContent th,
-    .markdownContent td {
-      padding: 0.5rem;
-    }
-  }
-  
-  /* Tablet adjustments */
-  @media (max-width: 991px) and (min-width: 768px) {
+}
+
+/* Tablet adjustments */
+@media (max-width: 991px) and (min-width: 768px) {
     .sidebarColumn {
-      width: 25% !important;
+        width: 25% !important;
     }
     
     .contentColumn {
-      width: 75% !important;
+        width: 75% !important;
     }
-  }
-  
-  /* Small mobile screens */
-  @media (max-width: 480px) {
+}
+
+/* Small mobile screens */
+@media (max-width: 480px) {
     .contentColumn {
-      padding: 0.5rem !important;
-      padding-top: 5rem !important;
+        padding: 0.8rem !important;
     }
-  
-    .markdownContent {
-      padding: 0.5rem !important;
-    }
-  
-    .markdownContent h1 { font-size: 1.3rem; }
-    .markdownContent h2 { font-size: 1.2rem; }
-    
+
     .mobileSidebar {
-      width: 100% !important;
+        width: 85% !important;
     }
-  }
+
+    .markdownContent {
+        padding: 0.8rem !important;
+    }
+}
