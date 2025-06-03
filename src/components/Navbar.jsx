@@ -23,7 +23,7 @@ function Navbar() {
           <Link to="/faq" className="item" style={{
             backgroundColor: isActive('/faq') ? 'rgba(255,255,255,0.1)' : 'transparent',
             borderBottom: isActive('/faq') ? '2px solid white' : 'none'
-          }}>FAQ</Link>
+          }}>Updates</Link>
         </div>
 
       </div>

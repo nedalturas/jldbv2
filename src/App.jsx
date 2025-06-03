@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar.jsx';
 import Home from './pages/Home.jsx';
-import FAQ from './pages/FAQ.jsx';
+import Updates from './pages/Updates.jsx';
 import PageNotFound from './components/PageNotFound.jsx';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/faq" element={<FAQ />} />
+          <Route path="/faq" element={<Updates />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
 

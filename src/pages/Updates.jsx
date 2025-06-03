@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import styles from './faq.module.css';
 
-function FAQ() {
+function Updates() {
   const [docs, setDocs] = useState([]);
   const [activeDoc, setActiveDoc] = useState('');
   const [content, setContent] = useState('');
@@ -155,4 +155,4 @@ function FAQ() {
   );
 }
 
-export default FAQ;
+export default Updates;
