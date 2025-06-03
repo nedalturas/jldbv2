@@ -31,7 +31,7 @@ function Updates() {
   useEffect(() => {
     if (!activeDoc) return;
     setLoadingDoc(true);
-    
+
     fetch(`/docs/${activeDoc}`)
       .then(res => {
         if (!res.ok) throw new Error('Failed to load doc');
@@ -64,67 +64,70 @@ function Updates() {
   }, []);
 
   return (
-    <div className={styles.docsContainer}>
-      {/* Mobile Header */}
-      <header className={styles.mobileHeader}>
-        <button 
-          className={styles.menuButton}
-          onClick={toggleMobileMenu}
-          aria-label="Toggle menu"
-        >
-          <i className={`${mobileMenuOpen ? 'times' : 'bars'} icon`}></i>
-        </button>
-        <span className={styles.mobileTitle}>{formatDocName(activeDoc)}</span>
-      </header>
 
-      {/* Mobile Sidebar */}
-      <nav className={`${styles.sidebar} ${mobileMenuOpen ? styles.visible : ''}`}>
-        <div className={styles.sidebarHeader}>
-          <i className="book icon"></i>
-          Documentation
-        </div>
-        <div className={styles.sidebarDivider}></div>
-        <div className={styles.sidebarContent}>
-          {docs.map(doc => (
-            <button
-              key={doc}
-              className={`${styles.sidebarItem} ${activeDoc === doc ? styles.active : ''}`}
-              onClick={() => handleDocSelect(doc)}
-            >
-              <i className="file text outline icon"></i>
-              {formatDocName(doc)}
-            </button>
-          ))}
-        </div>
-      </nav>
 
-      {/* Overlay */}
-      <div 
-        className={`${styles.overlay} ${mobileMenuOpen ? styles.visible : ''}`}
-        onClick={() => setMobileMenuOpen(false)}
-      />
+    <div className="ui container">
+      <div className={styles.docsContainer}>
+        {/* Mobile Header */}
+        <header className={styles.mobileHeader}>
+          <button
+            className={styles.menuButton}
+            onClick={toggleMobileMenu}
+            aria-label="Toggle menu"
+          >
+            <i className={`${mobileMenuOpen ? 'times' : 'bars'} icon`}></i>
+          </button>
+          <span className={styles.mobileTitle}>{formatDocName(activeDoc)}</span>
+        </header>
 
-      {/* Main Content */}
-      <main className={styles.mainContent} ref={contentRef}>
-        <div className={styles.contentHeader}>
-          <h1 className={styles.contentTitle}>
-            <i className="file text icon"></i>
-            {formatDocName(activeDoc)}
-          </h1>
-        </div>
-        
-        <div className={styles.contentBody}>
-          {loadingDoc ? (
-            <div className={styles.loader}>
-              <div className="ui active centered inline loader"></div>
-            </div>
-          ) : (
-            <div className={styles.markdownContent}>
-              <ReactMarkdown>{content}</ReactMarkdown>
-            </div>
-          )}
-        </div>
-      </main>
+        {/* Mobile Sidebar */}
+        <nav className={`${styles.sidebar} ${mobileMenuOpen ? styles.visible : ''}`}>
+          <div className={styles.sidebarHeader}>
+            <i className="book icon"></i>
+            Documentation
+          </div>
+          <div className={styles.sidebarDivider}></div>
+          <div className={styles.sidebarContent}>
+            {docs.map(doc => (
+              <button
+                key={doc}
+                className={`${styles.sidebarItem} ${activeDoc === doc ? styles.active : ''}`}
+                onClick={() => handleDocSelect(doc)}
+              >
+                <i className="file text outline icon"></i>
+                {formatDocName(doc)}
+              </button>
+            ))}
+          </div>
+        </nav>
+
+        {/* Overlay */}
+        <div
+          className={`${styles.overlay} ${mobileMenuOpen ? styles.visible : ''}`}
+          onClick={() => setMobileMenuOpen(false)}
+        />
+        <main className={styles.mainContent} ref={contentRef}>
+          <div className={styles.contentHeader}>
+            <h1 className={styles.contentTitle}>
+              <i className="file text icon"></i>
+              {formatDocName(activeDoc)}
+            </h1>
+          </div>
+
+          <div className={styles.contentBody}>
+            {loadingDoc ? (
+              <div className={styles.loader}>
+                <div className="ui active centered inline loader"></div>
+              </div>
+            ) : (
+              <div className={styles.markdownContent}>
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+
     </div>
   );
 }
