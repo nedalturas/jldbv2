@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styles from './DataTable.module.css';
 
 function DataTable({ filters }) {
   const [data, setData] = useState([]);
@@ -141,6 +142,8 @@ function DataTable({ filters }) {
           textAlign: 'center',
           padding: '4em 2em'
         }}>
+
+          {/* TODO: add the following styles to DataTable css */}
           <div className="ui icon header" style={{
             color: '#999',
             marginBottom: '2em',
