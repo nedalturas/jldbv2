@@ -77,7 +77,7 @@ function Updates() {
           >
             <i className={`${mobileMenuOpen ? 'times' : 'bars'} icon`}></i>
           </button>
-          <span className={styles.mobileTitle}>{formatDocName(activeDoc)}</span>
+          {/* <span className={styles.mobileTitle}>{formatDocName(activeDoc)}</span> */}
         </header>
 
         {/* Mobile Sidebar */}
