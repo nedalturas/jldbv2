@@ -10,7 +10,6 @@ function Updates() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const contentRef = useRef(null);
 
-  // Load manifest.json
   useEffect(() => {
     fetch('/docs/manifest.json')
       .then(res => {
@@ -29,7 +28,6 @@ function Updates() {
       });
   }, []);
 
-  // Load active markdown file
   useEffect(() => {
     if (!activeDoc) return;
     setLoadingDoc(true);
@@ -66,91 +64,67 @@ function Updates() {
   }, []);
 
   return (
-    <div className="ui container">
+    <div className={styles.docsContainer}>
       {/* Mobile Header */}
-      <div className={`${styles.mobileHeader} ui menu`}>
-        <div className="item">
-          <button 
-            className={`ui basic icon button ${styles.menuToggle}`}
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
-          >
-            <i className={`${mobileMenuOpen ? 'times' : 'bars'} icon`}></i>
-          </button>
-        </div>
-      </div>
+      <header className={styles.mobileHeader}>
+        <button 
+          className={styles.menuButton}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
+        >
+          <i className={`${mobileMenuOpen ? 'times' : 'bars'} icon`}></i>
+        </button>
+        <span className={styles.mobileTitle}>{formatDocName(activeDoc)}</span>
+      </header>
 
-      {/* Mobile Menu Sidebar */}
-      <div className={`ui left sidebar vertical menu ${mobileMenuOpen ? 'visible' : ''} ${styles.mobileSidebar}`}>
-        <div className="item">
-          <div className="header">Documentation</div>
+      {/* Mobile Sidebar */}
+      <nav className={`${styles.sidebar} ${mobileMenuOpen ? styles.visible : ''}`}>
+        <div className={styles.sidebarHeader}>
+          <i className="book icon"></i>
+          Documentation
         </div>
-        <div className="ui divider"></div>
-        {docs.map(doc => (
-          <a
-            key={doc}
-            className={`item ${activeDoc === doc ? 'active' : ''}`}
-            onClick={() => handleDocSelect(doc)}
-          >
-            <i className="file text outline icon"></i>
-            {formatDocName(doc)}
-          </a>
-        ))}
-      </div>
+        <div className={styles.sidebarDivider}></div>
+        <div className={styles.sidebarContent}>
+          {docs.map(doc => (
+            <button
+              key={doc}
+              className={`${styles.sidebarItem} ${activeDoc === doc ? styles.active : ''}`}
+              onClick={() => handleDocSelect(doc)}
+            >
+              <i className="file text outline icon"></i>
+              {formatDocName(doc)}
+            </button>
+          ))}
+        </div>
+      </nav>
 
-      {/* Overlay for mobile menu */}
+      {/* Overlay */}
       <div 
         className={`${styles.overlay} ${mobileMenuOpen ? styles.visible : ''}`}
         onClick={() => setMobileMenuOpen(false)}
       />
 
-      <div className={`ui stackable grid ${styles.mainGrid}`}>
-        {/* Desktop Sidebar */}
-        <div className={`four wide column ${styles.sidebarColumn}`}>
-          <div className={`ui vertical fluid tabular menu ${styles.desktopSidebar}`}>
-            <div className="item">
-              <div className="ui small header">
-                <i className="book icon"></i>
-                Documentation
-              </div>
-            </div>
-            <div className="ui divider"></div>
-            {docs.map(doc => (
-              <a
-                key={doc}
-                className={`item ${activeDoc === doc ? 'active' : ''}`}
-                onClick={() => handleDocSelect(doc)}
-              >
-                <i className="file text outline icon"></i>
-                {formatDocName(doc)}
-              </a>
-            ))}
-          </div>
+      {/* Main Content */}
+      <main className={styles.mainContent} ref={contentRef}>
+        <div className={styles.contentHeader}>
+          <h1 className={styles.contentTitle}>
+            <i className="file text icon"></i>
+            {formatDocName(activeDoc)}
+          </h1>
         </div>
         
-        {/* Content Area */}
-        <div className={`twelve wide stretched column ${styles.contentColumn}`}>
-          <div className={`ui segment ${styles.contentSegment}`} ref={contentRef}>
-            <div className="ui header">
-              <i className="file text icon"></i>
-              <div className="content">
-                {formatDocName(activeDoc)}
-                <div className="sub header">Documentation</div>
-              </div>
-            </div>
-            
-            <div className="ui divider"></div>
-            
-            {loadingDoc ? (
+        <div className={styles.contentBody}>
+          {loadingDoc ? (
+            <div className={styles.loader}>
               <div className="ui active centered inline loader"></div>
-            ) : (
-              <div className={`${styles.markdownContent} ui basic segment`}>
-                <ReactMarkdown>{content}</ReactMarkdown>
-              </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className={styles.markdownContent}>
+              <ReactMarkdown>{content}</ReactMarkdown>
+            </div>
+          )}
         </div>
-      </div>
+      </main>
     </div>
   );
 }
