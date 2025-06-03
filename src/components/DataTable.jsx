@@ -191,7 +191,7 @@ function DataTable({ filters }) {
               <td>
                 <div
                   className={`ui ${item.Status === 'Active' ? 'green' : 'red'
-                    } circular basic mini label `}
+                    } circular inverted  mini label `}
                 >
                   {item.Status}
                 </div>

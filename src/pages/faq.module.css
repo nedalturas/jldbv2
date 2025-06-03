@@ -5,7 +5,7 @@
   /* min-height: calc(100vh - 60px); */
   background: #f8f9fa;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 /* Mobile Header */
@@ -34,7 +34,7 @@
 }
 
 .menuButton:hover {
-  color: var(--company-color);
+  color: white;
 }
 
 .mobileTitle {
@@ -45,9 +45,10 @@
 
 /* Sidebar */
 .sidebar {
+  flex: 0 0 30%;
   background: #fff;
-  border-right: 1px solid #e5e7eb;
-  padding: 1.5rem 0;
+  /* border-right: 1px solid #e5e7eb; */
+  padding: 2em 0;
   top: 2em;
   position: sticky;
 }
@@ -59,7 +60,8 @@
   display: flex;
   align-items: center;
   position: relative;
-  top:0 ;
+  top: 0;
+  margin-left: 1em;
 }
 
 .sidebarDivider {
@@ -104,7 +106,6 @@
   padding: 2rem;
   background: #fff;
   /* height: calc(100vh - 60px); */
-  overflow-y: auto;
   flex: 1;
   width: 100%;
 }

@@ -77,14 +77,13 @@ function Updates() {
           >
             <i className={`${mobileMenuOpen ? 'times' : 'bars'} icon`}></i>
           </button>
-          {/* <span className={styles.mobileTitle}>{formatDocName(activeDoc)}</span> */}
         </header>
 
         {/* Mobile Sidebar */}
         <nav className={`${styles.sidebar} ${mobileMenuOpen ? styles.visible : ''}`}>
           <div className={styles.sidebarHeader}>
             <i className="book icon"></i>
-            Documentation
+            Updates
           </div>
           <div className={styles.sidebarDivider}></div>
           <div className={styles.sidebarContent}>
@@ -94,7 +93,7 @@ function Updates() {
                 className={`${styles.sidebarItem} ${activeDoc === doc ? styles.active : ''}`}
                 onClick={() => handleDocSelect(doc)}
               >
-                <i className="file text outline icon"></i>
+                {/* <i className="file text outline icon"></i> */}
                 {formatDocName(doc)}
               </button>
             ))}
