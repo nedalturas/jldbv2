@@ -1,9 +1,9 @@
 # About This Tool
-
+\
 Welcome to our  JLDB (Justlife Database) tool  — a simple yet powerful solution for discovering active ***marketplace***  teams in a specific city and connecting with them through WhatsApp group chats.
 
 ## 🧭 Purpose
-
+\
 This tool was created to help the teams from _operations_, _partner success_ & _exclusive_ to: 
 - Discover **active marketplace teams** in different cities in  **Dubai**.
 - **Connect instantly** with those teams via WhatsApp group chats.

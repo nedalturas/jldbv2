@@ -10,4 +10,49 @@
   padding: 4em 2em;
 }
 
-/* // TODO: need to add more styling from DataTable.jsx; */
+/* Material UI Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+  border-radius: 4px;
+}
+
+thead th {
+  font-weight: 500;
+  line-height: 1.5rem;
+  letter-spacing: 0.00938em;
+  padding: 16px;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.87);
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+}
+
+tbody tr {
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+td {
+  padding: 16px;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+/* Styling for clickable rows */
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}

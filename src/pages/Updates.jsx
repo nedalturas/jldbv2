@@ -105,12 +105,19 @@ function Updates() {
           className={`${styles.overlay} ${mobileMenuOpen ? styles.visible : ''}`}
           onClick={() => setMobileMenuOpen(false)}
         />
+
+
         <main className={styles.mainContent} ref={contentRef}>
           <div className={styles.contentHeader}>
-            <h1 className={styles.contentTitle}>
-              <i className="file text icon"></i>
-              {formatDocName(activeDoc)}
-            </h1>
+            <div className="ui breadcrumb">
+              <a className={styles.contentTitle}>
+                <a class="section" style={{ color: 'var(--company-color)'}}>Updates</a>
+                <div class="divider"> / </div>
+                <div class="active section">
+                  {formatDocName(activeDoc)}
+                </div>
+              </a>
+            </div>
           </div>
 
           <div className={styles.contentBody}>

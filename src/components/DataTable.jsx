@@ -86,7 +86,7 @@ function DataTable({ filters }) {
     if (!whatsappLink) return;
 
     window.open(whatsappLink, '_blank');
-  };
+  }
 
   const handleViewDetails = (company) => {
     const modalContent = `
@@ -175,8 +175,8 @@ function DataTable({ filters }) {
 
   return (
     <div className="ui container" style={{ marginTop: '4em' }}>
-      <table className="ui fixed single line selectable striped padded table">
-        <thead style={{ backgroundColor: '#fff !important' }}>
+      <table className="ui small fixed single line selectable striped  table">
+        <thead>
           <tr>
             <th className='four wide'>Company Name</th>
             <th className='two wide'>Coverage</th>
@@ -194,7 +194,7 @@ function DataTable({ filters }) {
               <td>
                 <div
                   className={`ui ${item.Status === 'Active' ? 'green' : 'red'
-                    } circular inverted  mini label `}
+                    } circular inverted  small label `}
                 >
                   {item.Status}
                 </div>
