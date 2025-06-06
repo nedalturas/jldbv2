@@ -111,9 +111,9 @@ function Updates() {
           <div className={styles.contentHeader}>
             <div className="ui breadcrumb">
               <a className={styles.contentTitle}>
-                <a class="section" style={{ color: 'var(--company-color)'}}>Updates</a>
-                <div class="divider"> / </div>
-                <div class="active section">
+                <a className="section" style={{ color: 'var(--company-color)'}}>Updates</a>
+                <div className="divider"> / </div>
+                <div className="active section">
                   {formatDocName(activeDoc)}
                 </div>
               </a>

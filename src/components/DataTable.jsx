@@ -222,15 +222,17 @@ function DataTable({ filters }) {
       {/* Items per page selector and info */}
       <div className="ui stackable grid" style={{ marginBottom: '1em' }}>
         <div className="eight wide column">
-          <div className="ui horizontal label">
+          <div className="ui mini horizontal statistic">
+            <div className='value'>
             Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems} items
+            </div>
           </div>
         </div>
         <div className="eight wide right aligned column">
           <div className="ui labeled input">
-            <div className="ui label">Items per page</div>
+            <div className="ui label">Items</div>
             <select 
-              className="ui dropdown"
+              className="ui compact dropdown"
               value={itemsPerPage}
               onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
             >
@@ -297,7 +299,8 @@ function DataTable({ filters }) {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="ui center aligned container" style={{ marginTop: '2em' }}>
+        <div className="ui center aligned container" style={{ marginTop: '2em', marginBottom: '2em'
+         }}>
           <div className="ui pagination menu">
             {/* Previous button */}
             <div 
