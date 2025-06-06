@@ -1,4 +1,4 @@
-export function initFomanticUI() {
+export default function initFomanticUI() {
   if (typeof window !== 'undefined' && window.$) {
     window.$('.ui.dropdown').dropdown();
     window.$('.ui.modal').modal();
@@ -9,3 +9,5 @@ export function initFomanticUI() {
     window.$('.ui.sidebar').sidebar();
   }
 }
+
+
