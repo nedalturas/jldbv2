@@ -9,3 +9,12 @@
     border-radius: 0 !important;
     box-shadow:  1px 5px 10px 0 -6px rgba(71,71,71,1) !important;
 }
+
+.navbar_brand{
+    font-weight: bolder !important;
+}
+
+.navbar_links{
+    font-weight: lighter !important;
+    font-size: .7em;
+}

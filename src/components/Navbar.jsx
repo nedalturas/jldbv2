@@ -11,11 +11,11 @@ function Navbar() {
     <div className={`${styles.navbar} ui massive borderless menu`}>
 
       <div className="ui container">
-        <div className="item" id="brand-name">
+        <div className={`${styles.navbar_brand} item`} id="brand-name">
           JLDB v2
         </div>
 
-        <div className="right menu">
+        <div className={`${styles.navbar_links} right menu`}>
           <Link to="/" className="item" style={{
             backgroundColor: isActive('/') ? 'rgba(255,255,255,0.1)' : 'transparent',
             borderBottom: isActive('/') ? '2px solid white' : 'none'
