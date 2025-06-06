@@ -2,5 +2,11 @@
 
 I am the best
 
+>[!INFO]
+>This is an info message
 
->#warning Quote from the Devloper
+>[!WARNING]
+>This is a warning message
+
+> [!SUCCESS]
+> This is a success message

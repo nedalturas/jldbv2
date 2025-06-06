@@ -10,6 +10,68 @@ function Updates() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const contentRef = useRef(null);
 
+  const CustomBlockquote = ({ children, ...props }) => {
+    // Extract text content from react-markdown structure
+    let textContent = '';
+    
+    if (Array.isArray(children)) {
+      textContent = children.map(child => 
+        typeof child === 'string' ? child : child?.props?.children || ''
+      ).join('');
+    }
+    
+    // Trim and get first line
+    const firstLine = textContent.trim().split('\n')[0].trim();
+    
+    let className = styles.blockquoteDefault;
+    let filteredChildren = children;
+    
+    // Check for special prefixes and filter them out
+    if (firstLine.startsWith('[!INFO]')) {
+      className = styles.blockquoteInfo;
+      filteredChildren = filterPrefix(children, '[!INFO]');
+    } else if (firstLine.startsWith('[!WARNING]')) {
+      className = styles.blockquoteWarning;
+      filteredChildren = filterPrefix(children, '[!WARNING]');
+    } else if (firstLine.startsWith('[!SUCCESS]')) {
+      className = styles.blockquoteSuccess;
+      filteredChildren = filterPrefix(children, '[!SUCCESS]');
+    }
+    
+    return (
+      <blockquote className={className} {...props}>
+        {filteredChildren}
+      </blockquote>
+    );
+  };
+
+  const filterPrefix = (children, prefix) => {
+    if (!Array.isArray(children)) return children;
+    
+    return children.map((child, index) => {
+      if (typeof child === 'string') {
+        return child;
+      }
+      
+      // Handle the paragraph element that contains the prefix
+      if (child?.props?.children && typeof child.props.children === 'string') {
+        const content = child.props.children.trim();
+        if (content.startsWith(prefix)) {
+          const newContent = content.replace(prefix, '').trim();
+          return newContent ? {
+            ...child,
+            props: {
+              ...child.props,
+              children: newContent
+            }
+          } : null;
+        }
+      }
+      
+      return child;
+    }).filter(Boolean);
+  };
+
   useEffect(() => {
     fetch('/docs/manifest.json')
       .then(res => {
@@ -30,8 +92,8 @@ function Updates() {
 
   useEffect(() => {
     if (!activeDoc) return;
-    setLoadingDoc(true);
 
+    setLoadingDoc(true);
     fetch(`/docs/${activeDoc}`)
       .then(res => {
         if (!res.ok) throw new Error('Failed to load doc');
@@ -64,8 +126,6 @@ function Updates() {
   }, []);
 
   return (
-
-
     <div className="ui container">
       <div className={styles.docsContainer}>
         {/* Mobile Header */}
@@ -93,7 +153,6 @@ function Updates() {
                 className={`${styles.sidebarItem} ${activeDoc === doc ? styles.active : ''}`}
                 onClick={() => handleDocSelect(doc)}
               >
-                {/* <i className="file text outline icon"></i> */}
                 {formatDocName(doc)}
               </button>
             ))}
@@ -105,7 +164,6 @@ function Updates() {
           className={`${styles.overlay} ${mobileMenuOpen ? styles.visible : ''}`}
           onClick={() => setMobileMenuOpen(false)}
         />
-
 
         <main className={styles.mainContent} ref={contentRef}>
           <div className={styles.contentHeader}>
@@ -127,13 +185,18 @@ function Updates() {
               </div>
             ) : (
               <div className={styles.markdownContent}>
-                <ReactMarkdown>{content}</ReactMarkdown>
+                <ReactMarkdown
+                  components={{
+                    blockquote: CustomBlockquote
+                  }}
+                >
+                  {content}
+                </ReactMarkdown>
               </div>
             )}
           </div>
         </main>
       </div>
-
     </div>
   );
 }

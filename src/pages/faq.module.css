@@ -201,22 +201,22 @@
   color: inherit;
   padding: 0;
 }
-
+/* 
 .markdownContent blockquote {
   border-left: 4px solid var(--company-color);
   padding: 1rem;
   margin: 1rem 0;
   background: #f0f9ff;
   border-radius: 0 6px 6px 0;
-}
-
-.markdownContent blockquote #warning {
+} */
+/* 
+.markdownContent blockquote{
   border-left: 4px solid yellow;
   padding: 1rem;
   margin: 1rem 0;
   background: #f0f9ff;
   border-radius: 0 6px 6px 0;
-}
+} */
 
 .markdownContent a {
   color: var(--company-color);
@@ -331,4 +331,37 @@
 .sidebar::-webkit-scrollbar-thumb:hover,
 .mainContent::-webkit-scrollbar-thumb:hover {
   background: #a1a1a1;
+}
+
+
+.markdownContent .blockquoteInfo {
+  border-left: 4px solid #3b82f6;
+  background: #eff6ff;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.markdownContent .blockquoteWarning {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.blockquoteSuccess {
+  border-left: 4px solid #10b981;
+  background: #ecfdf5;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.blockquoteDefault {
+  border-left: 4px solid #6b7280;
+  background: #f9fafb;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0 4px 4px 0;
 }
