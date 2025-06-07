@@ -11,22 +11,27 @@ function Updates() {
   const contentRef = useRef(null);
 
   const CustomBlockquote = ({ children, ...props }) => {
-    // Extract text content from react-markdown structure
     let textContent = '';
 
     if (Array.isArray(children)) {
-      textContent = children.map(child =>
-        typeof child === 'string' ? child : child?.props?.children || ''
-      ).join('');
+      textContent = children
+        .map(child =>
+          typeof child === 'string'
+            ? child
+            : typeof child?.props?.children === 'string'
+              ? child.props.children
+              : Array.isArray(child?.props?.children)
+                ? child.props.children.map(c => (typeof c === 'string' ? c : '')).join('')
+                : ''
+        )
+        .join('');
     }
 
-    // Trim and get first line
     const firstLine = textContent.trim().split('\n')[0].trim();
 
     let className = styles.blockquoteDefault;
     let filteredChildren = children;
 
-    // Check for special prefixes and filter them out
     if (firstLine.startsWith('[!INFO]')) {
       className = styles.blockquoteInfo;
       filteredChildren = filterPrefix(children, '[!INFO]');
@@ -48,23 +53,37 @@ function Updates() {
   const filterPrefix = (children, prefix) => {
     if (!Array.isArray(children)) return children;
 
-    return children.map((child, index) => {
+    return children.map(child => {
       if (typeof child === 'string') {
         return child;
       }
 
-      // Handle the paragraph element that contains the prefix
-      if (child?.props?.children && typeof child.props.children === 'string') {
-        const content = child.props.children.trim();
-        if (content.startsWith(prefix)) {
-          const newContent = content.replace(prefix, '').trim();
-          return newContent ? {
+      const childContent = child.props?.children;
+
+      if (typeof childContent === 'string' && childContent.trim().startsWith(prefix)) {
+        const newContent = childContent.replace(prefix, '').trim();
+        return newContent
+          ? {
+              ...child,
+              props: {
+                ...child.props,
+                children: newContent
+              }
+            }
+          : null;
+      }
+
+      if (Array.isArray(childContent)) {
+        const joined = childContent.map(c => (typeof c === 'string' ? c : '')).join('');
+        if (joined.trim().startsWith(prefix)) {
+          const cleaned = joined.replace(prefix, '').trim();
+          return {
             ...child,
             props: {
               ...child.props,
-              children: newContent
+              children: [cleaned]
             }
-          } : null;
+          };
         }
       }
 
@@ -128,7 +147,6 @@ function Updates() {
   return (
     <div className="ui container">
       <div className={styles.docsContainer}>
-        {/* Mobile Header */}
         <header className={styles.mobileHeader}>
           <button
             className={styles.menuButton}
@@ -139,7 +157,6 @@ function Updates() {
           </button>
         </header>
 
-        {/* Mobile Sidebar */}
         <nav className={`${styles.sidebar} ${mobileMenuOpen ? styles.visible : ''}`}>
           <div className={styles.sidebarHeader}>
             <i className="book icon"></i>
@@ -159,7 +176,6 @@ function Updates() {
           </div>
         </nav>
 
-        {/* Overlay */}
         <div
           className={`${styles.overlay} ${mobileMenuOpen ? styles.visible : ''}`}
           onClick={() => setMobileMenuOpen(false)}
