@@ -18,6 +18,11 @@ table {
   border-radius: 4px;
 }
 
+.inverted table {
+  background-color: #2e2e2e; /* Dark background for the table */
+  box-shadow: 0px 2px 1px -1px rgba(255,255,255,0.2), 0px 1px 1px 0px rgba(255,255,255,0.14), 0px 1px 3px 0px rgba(255,255,255,0.12);
+}
+
 thead th {
   font-weight: 500;
   line-height: 1.5rem;
@@ -28,9 +33,18 @@ thead th {
   border-bottom: 1px solid rgba(224, 224, 224, 1);
 }
 
+.inverted thead th {
+  color: rgba(255, 255, 255, 0.87); /* Light text for headers in dark mode */
+  border-bottom: 1px solid rgba(77, 77, 77, 1); /* Darker border */
+}
+
 tbody tr {
   border-bottom: 1px solid rgba(224, 224, 224, 1);
   transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.inverted tbody tr {
+  border-bottom: 1px solid rgba(77, 77, 77, 1); /* Darker border */
 }
 
 tbody tr:last-child {
@@ -38,14 +52,23 @@ tbody tr:last-child {
 }
 
 tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(0, 0, 0, 0.04); /* Keep existing hover for light mode */
 }
+
+.inverted tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.08); /* Light hover for dark mode */
+}
+
 
 td {
   padding: 16px;
   line-height: 1.43;
   letter-spacing: 0.01071em;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(0, 0, 0, 0.87); /* Keep existing text color for light mode */
+}
+
+.inverted td {
+  color: rgba(255, 255, 255, 0.87); /* Light text for cells in dark mode */
 }
 
 /* Styling for clickable rows */
@@ -55,4 +78,9 @@ td {
 
 .clickable-row:hover {
   background-color: rgba(0, 0, 0, 0.04);
+  /* Keep existing hover for light mode */
+}
+
+.inverted .clickable-row:hover {
+  background-color: rgba(255, 255, 255, 0.08); /* Light hover for dark mode */
 }

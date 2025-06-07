@@ -30,5 +30,5 @@ This tool was created to help the teams from _operations_, _partner success_ & _
 
 ## 📢 Get Involved 
 
-Want to include a new team? you can tag @ned in slack or send him a Direct Message along with the link of the group chat, also please specifiy what service and location the team would be serving.
+Want to include a new team? you can tag @ned in slack or send him a Direct Message along with the link of the group chat, also please specifiy what service and location the team would be serving. It would really help :)
 

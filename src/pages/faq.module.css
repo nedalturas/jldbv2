@@ -201,14 +201,14 @@
   color: inherit;
   padding: 0;
 }
-/* 
+
 .markdownContent blockquote {
-  border-left: 4px solid var(--company-color);
   padding: 1rem;
   margin: 1rem 0;
   background: #f0f9ff;
   border-radius: 0 6px 6px 0;
-} */
+} 
+
 /* 
 .markdownContent blockquote{
   border-left: 4px solid yellow;

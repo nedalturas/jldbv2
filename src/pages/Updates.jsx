@@ -13,19 +13,19 @@ function Updates() {
   const CustomBlockquote = ({ children, ...props }) => {
     // Extract text content from react-markdown structure
     let textContent = '';
-    
+
     if (Array.isArray(children)) {
-      textContent = children.map(child => 
+      textContent = children.map(child =>
         typeof child === 'string' ? child : child?.props?.children || ''
       ).join('');
     }
-    
+
     // Trim and get first line
     const firstLine = textContent.trim().split('\n')[0].trim();
-    
+
     let className = styles.blockquoteDefault;
     let filteredChildren = children;
-    
+
     // Check for special prefixes and filter them out
     if (firstLine.startsWith('[!INFO]')) {
       className = styles.blockquoteInfo;
@@ -37,7 +37,7 @@ function Updates() {
       className = styles.blockquoteSuccess;
       filteredChildren = filterPrefix(children, '[!SUCCESS]');
     }
-    
+
     return (
       <blockquote className={className} {...props}>
         {filteredChildren}
@@ -47,12 +47,12 @@ function Updates() {
 
   const filterPrefix = (children, prefix) => {
     if (!Array.isArray(children)) return children;
-    
+
     return children.map((child, index) => {
       if (typeof child === 'string') {
         return child;
       }
-      
+
       // Handle the paragraph element that contains the prefix
       if (child?.props?.children && typeof child.props.children === 'string') {
         const content = child.props.children.trim();
@@ -67,7 +67,7 @@ function Updates() {
           } : null;
         }
       }
-      
+
       return child;
     }).filter(Boolean);
   };
@@ -169,7 +169,7 @@ function Updates() {
           <div className={styles.contentHeader}>
             <div className="ui breadcrumb">
               <a className={styles.contentTitle}>
-                <a className="section" style={{ color: 'var(--company-color)'}}>Updates</a>
+                <a className="section" style={{ color: 'var(--company-color)' }}>Updates</a>
                 <div className="divider"> / </div>
                 <div className="active section">
                   {formatDocName(activeDoc)}

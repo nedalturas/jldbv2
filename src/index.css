@@ -8,3 +8,26 @@
   padding: 0;
   font-family: sans-serif;
 }
+/* globals.css or index.css */
+:root[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+}
+
+:root[data-theme="dark"] {
+  --bg-primary: #1b1c1d;
+  --bg-secondary: #2c2d30;
+  --text-primary: #ffffff;
+  --text-secondary: #b5b5b5;
+  --border-color: #3c3c41;
+}
+
+/* Apply to your components */
+.custom-component {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
