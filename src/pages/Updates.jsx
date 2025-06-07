@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
-import styles from './faq.module.css';
+import styles from './Update.module.css';
 
 function Updates() {
   const [docs, setDocs] = useState([]);
