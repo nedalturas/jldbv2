@@ -6,11 +6,11 @@ function DataTable({ filters }) {
   const [filteredData, setFilteredData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  
+
   const pageSizeOptions = [10, 25, 50, 100];
 
   useEffect(() => {
@@ -97,7 +97,7 @@ function DataTable({ filters }) {
   const getPageNumbers = () => {
     const pages = [];
     const maxVisible = 5;
-    
+
     if (totalPages <= maxVisible) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -105,12 +105,12 @@ function DataTable({ filters }) {
     } else {
       const start = Math.max(1, currentPage - 2);
       const end = Math.min(totalPages, start + maxVisible - 1);
-      
+
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
     }
-    
+
     return pages;
   };
 
@@ -144,9 +144,9 @@ function DataTable({ filters }) {
           <p><strong>Coverage:</strong> ${getCityCoverage(company)}</p>
           <p><strong>Status:</strong> ${company.Status}</p>
           ${company['WhatsApp Number']
-            ? `<p><strong>WhatsApp:</strong> ${company['WhatsApp Number']}</p>`
-            : ''
-          }
+        ? `<p><strong>WhatsApp:</strong> ${company['WhatsApp Number']}</p>`
+        : ''
+      }
         </div>
       </div>
     `;
@@ -224,14 +224,14 @@ function DataTable({ filters }) {
         <div className="eight wide column">
           <div className="ui mini horizontal statistic">
             <div className='value'>
-            Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems} items
+              Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems} items
             </div>
           </div>
         </div>
         <div className="eight wide right aligned column">
           <div className="ui labeled input">
             <div className="ui label">Items</div>
-            <select 
+            <select
               className="ui compact dropdown"
               value={itemsPerPage}
               onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
@@ -299,11 +299,12 @@ function DataTable({ filters }) {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="ui center aligned container" style={{ marginTop: '2em', marginBottom: '2em'
-         }}>
-          <div className="ui pagination menu">
+        <div className="ui center aligned container " style={{
+          marginTop: '2em', marginBottom: '2em', cursor: 'pointer'
+        }}>
+          <div className="ui pagination selectable menu link">
             {/* Previous button */}
-            <div 
+            <div
               className={`icon item ${currentPage === 1 ? 'disabled' : ''}`}
               onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
             >
@@ -313,7 +314,7 @@ function DataTable({ filters }) {
             {/* First page */}
             {getPageNumbers()[0] > 1 && (
               <>
-                <div 
+                <div
                   className="item"
                   onClick={() => handlePageChange(1)}
                 >
@@ -327,7 +328,7 @@ function DataTable({ filters }) {
 
             {/* Page numbers */}
             {getPageNumbers().map(page => (
-              <div 
+              <div
                 key={page}
                 className={`item ${currentPage === page ? 'active' : ''}`}
                 onClick={() => handlePageChange(page)}
@@ -342,7 +343,7 @@ function DataTable({ filters }) {
                 {getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1 && (
                   <div className="disabled item">...</div>
                 )}
-                <div 
+                <div
                   className="item"
                   onClick={() => handlePageChange(totalPages)}
                 >
@@ -352,7 +353,7 @@ function DataTable({ filters }) {
             )}
 
             {/* Next button */}
-            <div 
+            <div
               className={`icon item ${currentPage === totalPages ? 'disabled' : ''}`}
               onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
             >
