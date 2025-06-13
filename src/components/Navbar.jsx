@@ -20,10 +20,6 @@ function Navbar() {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'))
   }
 
-  // const themeIcon = theme === 'light' ? 'sun' : 'moon'
-  // const themeText = theme === 'light' ? 'Light ' : 'Dark '
-
-
 
 
   const isActive = (path) => location.pathname === path

@@ -44,17 +44,18 @@ function CompanyModal({ company, open, onClose }) {
   return (
     <div ref={modalRef} className="ui top aligned modal">
       <div className="header">
-        <i className="building icon"></i>
+        <i className="building icon" style={{ color: 'var(--company-color)'}}></i>
         {company?.['Company Name'] || 'Company Details'}
       </div>
       <div className="content">
-        <div className="ui relaxed list">
+        <div className="ui very relaxed list">
           <div className="item">
             <i className="cogs blue icon"></i>
-            <div className="content">
+            <div className=" content">
               <div className="header">Service Types</div>
               <div className="description">{company?.['Service Type'] || 'N/A'}</div>
-            </div>
+ 
+           </div>
           </div>
           <div className="item">
             <i className="map marker alternate green icon"></i>
