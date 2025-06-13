@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './DataTable.module.css';
+import CompanyModal from './CompanyModal';
 
 function DataTable({ filters }) {
   const [data, setData] = useState([]);
@@ -10,6 +11,11 @@ function DataTable({ filters }) {
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  //Modal States
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState(null);
 
   const pageSizeOptions = [10, 25, 50, 100];
 
@@ -136,24 +142,8 @@ function DataTable({ filters }) {
   };
 
   const handleViewDetails = (company) => {
-    const modalContent = `
-      <div class="header">${company['Company Name']}</div>
-      <div class="content">
-        <div class="description">
-          <p><strong>Service Types:</strong> ${company['Service Type'] || 'N/A'}</p>
-          <p><strong>Coverage:</strong> ${getCityCoverage(company)}</p>
-          <p><strong>Status:</strong> ${company.Status}</p>
-          ${company['WhatsApp Number']
-        ? `<p><strong>WhatsApp:</strong> ${company['WhatsApp Number']}</p>`
-        : ''
-      }
-        </div>
-      </div>
-    `;
-
-    const $modal = window.$('<div>').addClass('ui modal').html(modalContent);
-    window.$('body').append($modal);
-    $modal.modal('show');
+    setSelectedCompany(company);
+    setModalOpen(true);
   };
 
   if (loading) {
@@ -218,6 +208,7 @@ function DataTable({ filters }) {
   }
 
   return (
+    <>
     <div className="ui container" style={{ marginTop: '4em' }}>
       {/* Items per page selector and info */}
       <div className="ui stackable grid" style={{ marginBottom: '1em' }}>
@@ -363,6 +354,13 @@ function DataTable({ filters }) {
         </div>
       )}
     </div>
+
+     <CompanyModal
+      company={selectedCompany}
+      open={modalOpen}
+      onClose={() => setModalOpen(false)}
+    />
+</>
   );
 }
 
