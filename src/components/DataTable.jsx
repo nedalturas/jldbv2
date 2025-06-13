@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styles from './DataTable.module.css';
 import CompanyModal from './CompanyModal';
 
+// Constants
+const CITIES = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Al-Ain'];
+const TRUTHY_VALUES = ['✓', '✔', 'TRUE', true, '1'];
+const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
+const MAX_VISIBLE_PAGES = 5;
+
 function DataTable({ filters }) {
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -12,12 +17,9 @@ function DataTable({ filters }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  //Modal States
-
+  // Modal States
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
-
-  const pageSizeOptions = [10, 25, 50, 100];
 
   useEffect(() => {
     fetch(
@@ -31,7 +33,6 @@ function DataTable({ filters }) {
       })
       .then((json) => {
         setData(json);
-        setFilteredData(json);
         setLoading(false);
       })
       .catch((err) => {
@@ -45,7 +46,11 @@ function DataTable({ filters }) {
     if (typeof window !== 'undefined' && window.$) {
       window.$('.ui.dropdown').dropdown();
     }
-    if (!filters) return;
+  }, []);
+
+  // Memoized filtered data
+  const filteredData = useMemo(() => {
+    if (!filters || !data.length) return data;
 
     let filtered = data;
 
@@ -59,13 +64,8 @@ function DataTable({ filters }) {
     }
 
     if (filters.selectedCity) {
-      filtered = filtered.filter(
-        (item) =>
-          item[filters.selectedCity] === '✓' ||
-          item[filters.selectedCity] === '✔' ||
-          item[filters.selectedCity] === 'TRUE' ||
-          item[filters.selectedCity] === true ||
-          item[filters.selectedCity] === '1'
+      filtered = filtered.filter((item) =>
+        TRUTHY_VALUES.includes(item[filters.selectedCity])
       );
     }
 
@@ -78,9 +78,13 @@ function DataTable({ filters }) {
       );
     }
 
-    setFilteredData(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
+    return filtered;
   }, [filters, data]);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredData]);
 
   // Pagination calculations
   const totalItems = filteredData.length;
@@ -102,15 +106,14 @@ function DataTable({ filters }) {
   // Generate page numbers for pagination
   const getPageNumbers = () => {
     const pages = [];
-    const maxVisible = 5;
 
-    if (totalPages <= maxVisible) {
+    if (totalPages <= MAX_VISIBLE_PAGES) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
       const start = Math.max(1, currentPage - 2);
-      const end = Math.min(totalPages, start + maxVisible - 1);
+      const end = Math.min(totalPages, start + MAX_VISIBLE_PAGES - 1);
 
       for (let i = start; i <= end; i++) {
         pages.push(i);
@@ -121,18 +124,8 @@ function DataTable({ filters }) {
   };
 
   const getCityCoverage = (company) => {
-    const cities = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Al-Ain'];
-    return cities
-      .filter((city) => {
-        const value = company[city];
-        return (
-          value === '✓' ||
-          value === '✔' ||
-          value === 'TRUE' ||
-          value === true ||
-          value === '1'
-        );
-      })
+    return CITIES
+      .filter((city) => TRUTHY_VALUES.includes(company[city]))
       .join(', ');
   };
 
@@ -209,158 +202,160 @@ function DataTable({ filters }) {
 
   return (
     <>
-    <div className="ui container" style={{ marginTop: '4em' }}>
-      {/* Items per page selector and info */}
-      <div className="ui stackable grid" style={{ marginBottom: '1em' }}>
-        <div className="eight wide column">
-          <div className="ui mini horizontal statistic">
-            <div className='value'>
-              Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems} items
+      <div className="ui container" style={{ marginTop: '4em' }}>
+        {/* Items per page selector and info */}
+        <div className="ui stackable grid" style={{ marginBottom: '1em' }}>
+          <div className="eight wide column">
+            <div className="ui mini horizontal statistic">
+              <div className='value'>
+                Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems} items
+              </div>
+            </div>
+          </div>
+          <div className="eight wide right aligned column">
+            <div className="ui labeled input">
+              <div className="ui label">Items</div>
+              <select
+                className="ui compact dropdown"
+                value={itemsPerPage}
+                onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+              >
+                {PAGE_SIZE_OPTIONS.map(size => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
-        <div className="eight wide right aligned column">
-          <div className="ui labeled input">
-            <div className="ui label">Items</div>
-            <select
-              className="ui compact dropdown"
-              value={itemsPerPage}
-              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
-            >
-              {pageSizeOptions.map(size => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
+
+        {/* Table */}
+        <table className="ui small fixed single line selectable striped table">
+          <thead>
+            <tr>
+              <th className='four wide'>Company Name</th>
+              <th className='two wide'>Coverage</th>
+              <th className='three wide'>Service Types</th>
+              <th className='two wide'>Status</th>
+              <th className='three wide'>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.map((item, index) => (
+              <tr key={startIndex + index}>
+                <td>{item['Company Name']}</td>
+                <td>{getCityCoverage(item)}</td>
+                <td>{item['Service Type'] || 'N/A'}</td>
+                <td>
+                  <div
+                    className={`ui ${item.Status === 'Active' ? 'green' : 'red'} circular inverted small label`}
+                  >
+                    {item.Status}
+                  </div>
+                </td>
+                <td>
+                  <div className="mini ui vertical animated button"
+                    tabIndex={0}
+                    onClick={() => handleViewDetails(item)}>
+                    <div className="hidden content">View</div>
+                    <div className="visible content">
+                      <i className="eye icon"></i>
+                    </div>
+                  </div>
+
+                  {item['Whatsapp'] && (
+                    <div className="mini ui animated button"
+                      onClick={() => handleWhatsAppClick(item['Whatsapp'])}
+                      style={{ backgroundColor: '#25D366' }}
+                    >
+                      <div className="visible content">
+                        <i className="whatsapp icon" style={{ fontWeight: 'bolder' }}></i>
+                      </div>
+                      <div className="hidden content">Chat</div>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="ui center aligned container " style={{
+            marginTop: '2em', marginBottom: '2em', cursor: 'pointer'
+          }}>
+            <div className="ui pagination selectable menu link">
+              {/* Previous button */}
+              <div
+                className={`icon item ${currentPage === 1 ? 'disabled' : ''}`}
+                onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+              >
+                <i className="left chevron icon"></i>
+              </div>
+
+              {/* First page */}
+              {getPageNumbers()[0] > 1 && (
+                <>
+                  <div
+                    className="item"
+                    onClick={() => handlePageChange(1)}
+                  >
+                    1
+                  </div>
+                  {getPageNumbers()[0] > 2 && (
+                    <div className="disabled item">...</div>
+                  )}
+                </>
+              )}
+
+              {/* Page numbers */}
+              {getPageNumbers().map(page => (
+                <div
+                  key={page}
+                  className={`item ${currentPage === page ? 'active' : ''}`}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </div>
               ))}
-            </select>
+
+              {/* Last page */}
+              {getPageNumbers()[getPageNumbers().length - 1] < totalPages && (
+                <>
+                  {getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1 && (
+                    <div className="disabled item">...</div>
+                  )}
+                  <div
+                    className="item"
+                    onClick={() => handlePageChange(totalPages)}
+                  >
+                    {totalPages}
+                  </div>
+                </>
+              )}
+
+              {/* Next button */}
+              <div
+                className={`icon item ${currentPage === totalPages ? 'disabled' : ''}`}
+                onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+              >
+                <i className="right chevron icon"></i>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Table */}
-      <table className="ui small fixed single line selectable striped table">
-        <thead>
-          <tr>
-            <th className='four wide'>Company Name</th>
-            <th className='two wide'>Coverage</th>
-            <th className='three wide'>Service Types</th>
-            <th className='two wide'>Status</th>
-            <th className='three wide'>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((item, index) => (
-            <tr key={startIndex + index}>
-              <td>{item['Company Name']}</td>
-              <td>{getCityCoverage(item)}</td>
-              <td>{item['Service Type'] || 'N/A'}</td>
-              <td>
-                <div
-                  className={`ui ${item.Status === 'Active' ? 'green' : 'red'} circular inverted small label`}
-                >
-                  {item.Status}
-                </div>
-              </td>
-              <td>
-                <div className="mini ui vertical animated button"
-                  tabIndex={0}
-                  onClick={() => handleViewDetails(item)}>
-                  <div className="hidden content">View</div>
-                  <div className="visible content">
-                    <i className="eye icon"></i>
-                  </div>
-                </div>
-
-                {item['Whatsapp'] && (
-                  <div className="mini ui animated button"
-                    onClick={() => handleWhatsAppClick(item['Whatsapp'])}
-                    style={{ backgroundColor: '#25D366' }}
-                  >
-                    <div className="visible content">
-                      <i className="whatsapp icon" style={{ fontWeight: 'bolder' }}></i>
-                    </div>
-                    <div className="hidden content">Chat</div>
-                  </div>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="ui center aligned container " style={{
-          marginTop: '2em', marginBottom: '2em', cursor: 'pointer'
-        }}>
-          <div className="ui pagination selectable menu link">
-            {/* Previous button */}
-            <div
-              className={`icon item ${currentPage === 1 ? 'disabled' : ''}`}
-              onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-            >
-              <i className="left chevron icon"></i>
-            </div>
-
-            {/* First page */}
-            {getPageNumbers()[0] > 1 && (
-              <>
-                <div
-                  className="item"
-                  onClick={() => handlePageChange(1)}
-                >
-                  1
-                </div>
-                {getPageNumbers()[0] > 2 && (
-                  <div className="disabled item">...</div>
-                )}
-              </>
-            )}
-
-            {/* Page numbers */}
-            {getPageNumbers().map(page => (
-              <div
-                key={page}
-                className={`item ${currentPage === page ? 'active' : ''}`}
-                onClick={() => handlePageChange(page)}
-              >
-                {page}
-              </div>
-            ))}
-
-            {/* Last page */}
-            {getPageNumbers()[getPageNumbers().length - 1] < totalPages && (
-              <>
-                {getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1 && (
-                  <div className="disabled item">...</div>
-                )}
-                <div
-                  className="item"
-                  onClick={() => handlePageChange(totalPages)}
-                >
-                  {totalPages}
-                </div>
-              </>
-            )}
-
-            {/* Next button */}
-            <div
-              className={`icon item ${currentPage === totalPages ? 'disabled' : ''}`}
-              onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-            >
-              <i className="right chevron icon"></i>
-            </div>
-          </div>
-        </div>
+      {modalOpen && (
+        <CompanyModal
+          company={selectedCompany}
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+        />
       )}
-    </div>
-
-     <CompanyModal
-      company={selectedCompany}
-      open={modalOpen}
-      onClose={() => setModalOpen(false)}
-    />
-</>
+    </>
   );
 }
 

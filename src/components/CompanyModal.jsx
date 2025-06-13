@@ -1,91 +1,88 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+
+// Constants
+const CITIES = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Al-Ain'];
+const TRUTHY_VALUES = ['✓', '✔', 'TRUE', true, '1'];
 
 function CompanyModal({ company, open, onClose }) {
-  const modalRef = useRef(null);
-
   const getCityCoverage = (company) => {
-    const cities = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Al-Ain'];
-    return cities
+    return CITIES
       .filter((city) => {
         const value = company?.[city];
-        return (
-          value === '✓' ||
-          value === '✔' ||
-          value === 'TRUE' ||
-          value === true ||
-          value === '1'
-        );
+        return TRUTHY_VALUES.includes(value);
       })
       .join(', ');
   };
 
-  useEffect(() => {
-    if (window.$ && modalRef.current) {
-      window.$(modalRef.current).modal({
-        closable: false,
-        onHidden: onClose,
-        transition: 'fade up',
-        offset: 0,
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (window.$ && modalRef.current) {
-      const $modal = window.$(modalRef.current);
-      if (open) {
-        $modal.modal('show');
-      } else {
-        $modal.modal('hide');
-      }
-    }
-  }, [open]);
+  if (!open) return null;
 
   return (
-    <div ref={modalRef} className="ui top aligned modal">
-      <div className="header">
-        <i className="building icon" style={{ color: 'var(--company-color)'}}></i>
-        {company?.['Company Name'] || 'Company Details'}
-      </div>
-      <div className="content">
-        <div className="ui very relaxed list">
-          <div className="item">
-            <i className="cogs blue icon"></i>
-            <div className=" content">
-              <div className="header">Service Types</div>
-              <div className="description">{company?.['Service Type'] || 'N/A'}</div>
- 
-           </div>
-          </div>
-          <div className="item">
-            <i className="map marker alternate green icon"></i>
-            <div className="content">
-              <div className="header">Coverage</div>
-              <div className="description">{getCityCoverage(company) || 'N/A'}</div>
-            </div>
-          </div>
-          <div className="item">
-            <i className="check circle teal icon"></i>
-            <div className="content">
-              <div className="header">Status</div>
-              <div className="description">{company?.Status || 'N/A'}</div>
-            </div>
-          </div>
-          {company?.['WhatsApp Number'] && (
+    <div 
+      className="ui dimmer modals page transition visible active"
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1001,
+        backgroundColor: 'rgba(0,0,0,0.85)'
+      }}
+    >
+      <div 
+        className="ui top aligned modal transition visible active"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          position: 'relative',
+          margin: '1rem auto',
+          maxWidth: '500px',
+          top: '10%'
+        }}
+      >
+        <div className="header">
+          <i className="building icon" style={{ color: 'var(--company-color)'}}></i>
+          {company?.['Company Name'] || 'Company Details'}
+        </div>
+        <div className="content">
+          <div className="ui very relaxed list">
             <div className="item">
-              <i className="whatsapp green icon"></i>
+              <i className="cogs blue icon"></i>
               <div className="content">
-                <div className="header">WhatsApp</div>
-                <div className="description">{company['WhatsApp Number']}</div>
+                <div className="header">Service Types</div>
+                <div className="description">{company?.['Service Type'] || 'N/A'}</div>
               </div>
             </div>
-          )}
+            <div className="item">
+              <i className="map marker alternate green icon"></i>
+              <div className="content">
+                <div className="header">Coverage</div>
+                <div className="description">{getCityCoverage(company) || 'N/A'}</div>
+              </div>
+            </div>
+            <div className="item">
+              <i className="check circle teal icon"></i>
+              <div className="content">
+                <div className="header">Status</div>
+                <div className="description">{company?.Status || 'N/A'}</div>
+              </div>
+            </div>
+            {company?.['WhatsApp Number'] && (
+              <div className="item">
+                <i className="whatsapp green icon"></i>
+                <div className="content">
+                  <div className="header">WhatsApp</div>
+                  <div className="description">{company['WhatsApp Number']}</div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="actions">
-        <div className="ui negative button" onClick={onClose}>
-          <i className="times icon"></i>
-          Close
+        <div className="actions">
+          <div className="ui negative button" onClick={onClose}>
+            <i className="times icon"></i>
+            Close
+          </div>
         </div>
       </div>
     </div>
