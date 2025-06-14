@@ -16,6 +16,8 @@ function CompanyModal({ company, open, onClose }) {
 
   if (!open) return null;
 
+  
+
   return (
     <div 
       className="ui dimmer modals page transition visible active"
@@ -27,7 +29,7 @@ function CompanyModal({ company, open, onClose }) {
         right: 0,
         bottom: 0,
         zIndex: 1001,
-        backgroundColor: 'rgba(0,0,0,0.85)'
+        backgroundColor: 'rgba(0,0,0,0.85)',
       }}
     >
       <div 
@@ -37,7 +39,8 @@ function CompanyModal({ company, open, onClose }) {
           position: 'relative',
           margin: '1rem auto',
           maxWidth: '500px',
-          top: '10%'
+          top: '10%',
+          height: 'auto',
         }}
       >
         <div className="header">
@@ -79,7 +82,7 @@ function CompanyModal({ company, open, onClose }) {
           </div>
         </div>
         <div className="actions">
-          <div className="ui negative button" onClick={onClose}>
+          <div className="ui negative mini button" onClick={onClose}>
             <i className="times icon"></i>
             Close
           </div>

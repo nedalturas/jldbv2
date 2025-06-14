@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import styles from './DataTable.module.css';
 import CompanyModal from './CompanyModal';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 // Constants
 const CITIES = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Al-Ain'];
 const TRUTHY_VALUES = ['✓', '✔', 'TRUE', true, '1'];
@@ -13,7 +14,7 @@ function DataTable({ filters }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Pagination states
+  // Pagination states/
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
@@ -160,7 +161,7 @@ function DataTable({ filters }) {
 
   if (!filteredData || filteredData.length === 0) {
     return (
-      <div className="ui container" style={{ marginTop: '4em' }}>
+      <div className="ui container" style={{ marginTop: '4em', marginBottom: '4em'}}>
         <div className="" style={{
           width: '100%',
           minHeight: '250px',
@@ -203,7 +204,33 @@ function DataTable({ filters }) {
   return (
     <>
       <div className="ui container" style={{ marginTop: '4em' }}>
-        {/* Items per page selector and info */}
+        {/* 
+        
+         <div className="ui borderless menu">
+
+          <div className="item">
+            <div className='value'>
+              Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems} items
+            </div>
+
+          </div>
+          <div className="right menu">
+            <select
+              className="ui dropdown"
+              value={itemsPerPage}
+              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+            >
+              {PAGE_SIZE_OPTIONS.map(size => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        
+        */}
+       {/* Items per page selector and info */}
         <div className="ui stackable grid" style={{ marginBottom: '1em' }}>
           <div className="eight wide column">
             <div className="ui mini horizontal statistic">
@@ -216,7 +243,7 @@ function DataTable({ filters }) {
             <div className="ui labeled input">
               <div className="ui label">Items</div>
               <select
-                className="ui compact dropdown"
+                className="ui dropdown"
                 value={itemsPerPage}
                 onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
               >
@@ -231,56 +258,63 @@ function DataTable({ filters }) {
         </div>
 
         {/* Table */}
-        <table className="ui small fixed single line selectable striped table">
-          <thead>
-            <tr>
-              <th className='four wide'>Company Name</th>
-              <th className='two wide'>Coverage</th>
-              <th className='three wide'>Service Types</th>
-              <th className='two wide'>Status</th>
-              <th className='three wide'>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((item, index) => (
-              <tr key={startIndex + index}>
-                <td>{item['Company Name']}</td>
-                <td>{getCityCoverage(item)}</td>
-                <td>{item['Service Type'] || 'N/A'}</td>
-                <td>
-                  <div
-                    className={`ui ${item.Status === 'Active' ? 'green' : 'red'} circular inverted small label`}
-                  >
-                    {item.Status}
-                  </div>
-                </td>
-                <td>
-                  <div className="mini ui vertical animated button"
-                    tabIndex={0}
-                    onClick={() => handleViewDetails(item)}>
-                    <div className="hidden content">View</div>
-                    <div className="visible content">
-                      <i className="eye icon"></i>
-                    </div>
-                  </div>
-
-                  {item['Whatsapp'] && (
-                    <div className="mini ui animated button"
-                      onClick={() => handleWhatsAppClick(item['Whatsapp'])}
-                      style={{ backgroundColor: '#25D366' }}
-                    >
-                      <div className="visible content">
-                        <i className="whatsapp icon" style={{ fontWeight: 'bolder' }}></i>
-                      </div>
-                      <div className="hidden content">Chat</div>
-                    </div>
-                  )}
-                </td>
+        <div className="table-responsive">
+          <table className="table table-hover align-middle">
+            <thead >
+              <tr >
+                <th style={{ fontWeight: 'bolder' }}>Company Name</th>
+                <th >Coverage</th>
+                <th>Service Types</th>
+                <th >Status</th>
+                <th >Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentItems.map((item, index) => (
+                <tr key={startIndex + index}>
+                  <td>{item['Company Name']}</td>
+                  <td>{getCityCoverage(item)}</td>
+                  <td>{item['Service Type'] || 'N/A'}</td>
+                  <td>
+                    <div
+                      className={`ui ${item.Status === 'Active' ? 'text-bg-success' : 'text-bg-danger'} badge rounded-pill`}
+                    >
+                      {item.Status}
+                    </div>
+                  </td>
+                  <td>
 
+                    <div className="btn-group">
+                      <div className="btn btn-sm mini ui vertical animated button"
+                        tabIndex={0}
+                        onClick={() => handleViewDetails(item)}>
+                        <div className="hidden content">View</div>
+                        <div className="visible content">
+                          <i className="eye icon"></i>
+                        </div>
+                      </div>
+
+                      {item['Whatsapp'] && (
+                        <div className="btn btn-sm mini ui animated button"
+                          onClick={() => handleWhatsAppClick(item['Whatsapp'])}
+                          style={{ backgroundColor: '#25D366' }}
+                        >
+                          <div className="visible content">
+                            <i className="whatsapp icon" style={{ fontWeight: 'bolder' }}></i>
+                          </div>
+                          <div className="hidden content">Chat</div>
+                        </div>
+                      )}
+
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+
+        </div>
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="ui center aligned container " style={{

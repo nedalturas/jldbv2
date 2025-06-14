@@ -10,7 +10,7 @@ function Filters({ onFilterChange }) {
     // Initialize dropdowns when component mounts
     if (typeof window !== 'undefined' && window.$) {
       window.$('.ui.dropdown').dropdown();
-    }
+         }
 
     // Fetch data to get unique service types
     fetch('https://opensheet.vercel.app/1aAOwWOLyUdbT2a3F4IBTHDPnXBlBH240OFtIKom5H9Q/Sheet1')
