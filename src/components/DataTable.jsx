@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import styles from './DataTable.module.css';
 import CompanyModal from './CompanyModal';
+import styles from './DataTable.module.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 // Constants
@@ -204,8 +204,8 @@ function DataTable({ filters }) {
   return (
     <>
       <div className="ui container" style={{ marginTop: '4em' }}>
-        {/* 
         
+       {/* Items per page selector and info */}
          <div className="ui borderless menu">
 
           <div className="item">
@@ -229,47 +229,19 @@ function DataTable({ filters }) {
           </div>
         </div>
         
-        */}
-       {/* Items per page selector and info */}
-        <div className="ui stackable grid" style={{ marginBottom: '1em' }}>
-          <div className="eight wide column">
-            <div className="ui mini horizontal statistic">
-              <div className='value'>
-                Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of {totalItems} items
-              </div>
-            </div>
-          </div>
-          <div className="eight wide right aligned column">
-            <div className="ui labeled input">
-              <div className="ui label">Items</div>
-              <select
-                className="ui dropdown"
-                value={itemsPerPage}
-                onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
-              >
-                {PAGE_SIZE_OPTIONS.map(size => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
         {/* Table */}
         <div className="table-responsive">
-          <table className="table table-hover align-middle">
+          <table className={`table table-hover align-middle ${styles.boldHeaders}`}>
             <thead >
-              <tr >
-                <th style={{ fontWeight: 'bolder' }}>Company Name</th>
+              <tr>
+                <th>Company Name</th>
                 <th >Coverage</th>
                 <th>Service Types</th>
                 <th >Status</th>
                 <th >Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="table-group-divider">
               {currentItems.map((item, index) => (
                 <tr key={startIndex + index}>
                   <td>{item['Company Name']}</td>

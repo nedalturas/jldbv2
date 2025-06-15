@@ -185,13 +185,11 @@ function Updates() {
         <main className={styles.mainContent} ref={contentRef}>
           <div className={styles.contentHeader}>
             <div className="ui breadcrumb">
-              <a className={styles.contentTitle}>
+              <div className={styles.contentTitle}>
                 <a className="section" style={{ color: 'var(--company-color)' }}>Updates</a>
                 <div className="divider"> / </div>
-                <div className="active section">
-                  {formatDocName(activeDoc)}
-                </div>
-              </a>
+                <div className="active section">{formatDocName(activeDoc)}</div>
+              </div>
             </div>
           </div>
 
